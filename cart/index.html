@@ -1,0 +1,5672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Numart</title>
+    <link rel="icon" type="image/png" href="https://imagenes.numart.com.co/corporate-image/numartIsotypeBlue-v3.ico">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&amp;family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --blue: #197bc2;
+            --blue-light: #37acff;
+            --blue-dark: #0e5a99;
+            --gold: #FFC439;
+            --dark: #271911;
+            --gray: #6B7280;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --green: #10B981;
+            --radius-lg: 1.5rem;
+            --radius-xl: 2rem;
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, .06);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, .10);
+            --shadow-lg: 0 24px 64px rgba(0, 0, 0, .14);
+        }
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+            background: var(--white);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* ===================== SCROLLBAR ===================== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue);
+            border-radius: 10px;
+        }
+
+        /* ===================== NAVBAR ===================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(25, 123, 194, .10);
+            transition: box-shadow .3s;
+        }
+
+        header.scrolled {
+            box-shadow: 0 4px 32px rgba(25, 123, 194, .10);
+        }
+
+        .nav-logo img {
+            height: 44px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--gray);
+            text-decoration: none;
+            letter-spacing: .02em;
+            transition: color .2s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--blue);
+            transform: scaleX(0);
+            transition: transform .25s;
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover {
+            color: var(--blue);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+        }
+
+        .btn-outline {
+            font-family: inherit;
+            font-size: .875rem;
+            font-weight: 700;
+            padding: .55rem 1.4rem;
+            border-radius: 999px;
+            border: 2px solid var(--blue);
+            color: var(--blue);
+            background: transparent;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, color .2s, transform .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--blue);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            font-family: inherit;
+            font-size: .875rem;
+            font-weight: 700;
+            padding: .6rem 1.5rem;
+            border-radius: 999px;
+            border: none;
+            background: var(--blue);
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, transform .15s, box-shadow .2s;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            box-shadow: 0 4px 16px rgba(25, 123, 194, .35);
+        }
+
+        .btn-primary:hover {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(25, 123, 194, .45);
+        }
+
+        .btn-primary-lg {
+            font-size: 1.05rem;
+            padding: .85rem 2.2rem;
+        }
+
+        .btn-ghost {
+            font-family: inherit;
+            font-size: .95rem;
+            font-weight: 600;
+            padding: .8rem 2rem;
+            border-radius: 999px;
+            border: 2px solid rgba(255, 255, 255, .5);
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, border-color .2s, transform .15s;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, .18);
+            border-color: rgba(255, 255, 255, .8);
+            transform: translateY(-2px);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+
+        /* ===================== HERO ===================== */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 70px;
+            position: relative;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 15% 90%, rgba(25, 123, 194, .07) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 10%, rgba(255, 196, 57, .10) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 60% at 90% 70%, rgba(16, 185, 129, .05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        #hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(25, 123, 194, .10) 1.2px, transparent 1.2px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 3rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            background: rgba(25, 123, 194, .08);
+            border: 1.5px solid rgba(25, 123, 194, .18);
+            color: var(--blue-dark);
+            font-size: .8rem;
+            font-weight: 700;
+            padding: .4rem 1rem;
+            border-radius: 999px;
+            margin-bottom: 1.8rem;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: translateY(14px);
+            animation: heroFadeUp .6s ease .2s forwards;
+        }
+
+        .hero-badge span.dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, .25);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 3px rgba(16, 185, 129, .25);
+            }
+
+            50% {
+                box-shadow: 0 0 0 6px rgba(16, 185, 129, .10);
+            }
+        }
+
+        .hero-headline {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: .3rem .6rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .hero-word {
+            font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.1;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(28px) scale(.88);
+        }
+
+        .hero-word.sofia-word {
+            color: var(--blue);
+        }
+
+        .hero-word.loaded {
+            animation: wordReveal .55s cubic-bezier(.22, .68, 0, 1.4) forwards;
+        }
+
+        @keyframes wordReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        #feature-container {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-sub {
+            font-size: clamp(.95rem, 2vw, 1.15rem);
+            color: var(--gray);
+            max-width: 520px;
+            margin: 1.6rem auto 2.5rem;
+            line-height: 1.7;
+            font-weight: 400;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: heroFadeUp .6s ease 1.8s forwards;
+        }
+
+        .hero-ctas {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(16px);
+            animation: heroFadeUp .6s ease 2.1s forwards;
+        }
+
+        @keyframes heroFadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-scroll-hint {
+            margin-top: 3.5rem;
+            opacity: 0;
+            animation: heroFadeUp .6s ease 2.5s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: .5rem;
+            color: var(--gray);
+            font-size: .78rem;
+            letter-spacing: .06em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .scroll-mouse {
+            width: 22px;
+            height: 34px;
+            border: 2px solid rgba(25, 123, 194, .35);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .scroll-mouse::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            height: 6px;
+            background: var(--blue);
+            border-radius: 2px;
+            animation: scrollDot 1.6s ease infinite;
+        }
+
+        @keyframes scrollDot {
+            0% {
+                top: 5px;
+                opacity: 1;
+            }
+
+            70% {
+                top: 14px;
+                opacity: 0;
+            }
+
+            100% {
+                top: 5px;
+                opacity: 0;
+            }
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            opacity: 0;
+            animation: heroFadeUp .6s ease 2.3s forwards;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .stat-number span {
+            color: var(--blue);
+        }
+
+        .stat-label {
+            font-size: .8rem;
+            color: var(--gray);
+            font-weight: 600;
+            letter-spacing: .04em;
+            margin-top: .3rem;
+        }
+
+        /* ===================== SECTION STYLES ===================== */
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--blue);
+            background: rgba(25, 123, 194, .08);
+            padding: .35rem .9rem;
+            border-radius: 999px;
+            margin-bottom: 1.1rem;
+        }
+
+        /* ===================== FEATURES SECTION ===================== */
+        #features {
+            padding: 6rem 1.5rem;
+            background: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #features::before {
+            content: '';
+            position: absolute;
+            top: -120px;
+            right: -80px;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(25, 123, 194, .07), transparent 70%);
+            pointer-events: none;
+        }
+
+        .features-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.9rem, 4vw, 3rem);
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.15;
+            margin-bottom: .8rem;
+        }
+
+        .section-sub {
+            font-size: 1.05rem;
+            color: var(--gray);
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            border: 1.5px solid rgba(0, 0, 0, .06);
+            transition: transform .3s, box-shadow .3s, border-color .3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue), var(--blue-light));
+            transform: scaleX(0);
+            transition: transform .35s;
+            transform-origin: left;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .feat-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(25, 123, 194, .15);
+        }
+
+        .feat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .feat-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: .5rem;
+        }
+
+        .feat-desc {
+            font-size: .9rem;
+            color: var(--gray);
+            line-height: 1.65;
+        }
+
+        /* ===================== BENTO / DETAIL SECTIONS ===================== */
+        .detail-section {
+            padding: 5rem 1.5rem;
+            background: var(--white);
+        }
+
+        .detail-section.alt {
+            background: var(--light);
+        }
+
+        .detail-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .detail-wrap.reverse {
+            direction: rtl;
+        }
+
+        .detail-wrap.reverse>* {
+            direction: ltr;
+        }
+
+        .detail-title {
+            font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .detail-text {
+            font-size: 1.02rem;
+            color: var(--gray);
+            line-height: 1.75;
+            margin-bottom: 1rem;
+        }
+
+        .detail-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-list li {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            font-size: .95rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .detail-list li i {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, .12);
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .65rem;
+            flex-shrink: 0;
+        }
+
+        .detail-visual {
+            position: relative;
+        }
+
+        .detail-visual img {
+            border-radius: var(--radius-xl);
+            width: 100%;
+            object-fit: cover;
+            display: block;
+            box-shadow: var(--shadow-md);
+        }
+
+        .float-card {
+            position: absolute;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 1.2rem 1.5rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .15);
+            border: 1.5px solid rgba(0, 0, 0, .06);
+            max-width: 280px;
+            animation: floatCard 3.5s ease-in-out infinite;
+        }
+
+        .float-card.bottom-right {
+            bottom: -1.5rem;
+            right: -1.5rem;
+        }
+
+        .float-card.bottom-left {
+            bottom: -1.5rem;
+            left: -1.5rem;
+        }
+
+        @keyframes floatCard {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .float-card-header {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-bottom: .8rem;
+            padding-bottom: .8rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .float-card-header img {
+            width: auto;
+            height: 18px;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .float-card-header span {
+            font-size: .78rem;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .float-card p {
+            font-size: .82rem;
+            line-height: 1.55;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .float-card .tag-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: .4rem;
+        }
+
+        .float-card .tag-label {
+            font-size: .78rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .float-card .tag-value {
+            font-size: .88rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .float-card .tag-value.green {
+            color: var(--green);
+        }
+
+        .float-card .tag-value.blue {
+            color: var(--blue);
+        }
+
+        .pulse-btn {
+            display: inline-block;
+            margin-top: .6rem;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--blue);
+            border: 1.5px solid var(--blue);
+            border-radius: 999px;
+            padding: .3rem .9rem;
+            cursor: pointer;
+            transition: background .2s, color .2s;
+        }
+
+        .pulse-btn:hover {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        /* ===================== CTA BAND ===================== */
+        #cta-band {
+            padding: 5rem 1.5rem;
+            background: linear-gradient(135deg, #0e5a99 0%, #197bc2 50%, #1e9de8 100%);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #cta-band::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: -80px;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .05);
+            pointer-events: none;
+        }
+
+        #cta-band::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255, 196, 57, .1);
+            pointer-events: none;
+        }
+
+        .cta-band-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .cta-band-inner h2 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .cta-band-inner p {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, .8);
+            margin-bottom: 2rem;
+            line-height: 1.65;
+        }
+
+        /* ===================== TRUST LOGOS ===================== */
+        #trust {
+            padding: 2.5rem 1.5rem;
+            background: var(--white);
+            border-top: 1px solid #f0f4f8;
+            border-bottom: 1px solid #f0f4f8;
+        }
+
+        .trust-wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .trust-label {
+            font-size: .82rem;
+            font-weight: 700;
+            color: #b0b8c4;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--gray);
+        }
+
+        .trust-badge i {
+            color: var(--blue);
+            font-size: 1rem;
+        }
+
+        /* ===================== PROCESS / STEPS ===================== */
+        #process {
+            padding: 6rem 1.5rem;
+            background: var(--light);
+        }
+
+        .process-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .process-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            position: relative;
+        }
+
+        .step-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 2.2rem 1.8rem;
+            border: 1.5px solid rgba(0, 0, 0, .06);
+            text-align: center;
+            position: relative;
+            transition: transform .3s, box-shadow .3s;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .step-number {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 32px;
+            background: var(--blue);
+            color: #fff;
+            border-radius: 50%;
+            font-size: .8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(25, 123, 194, .4);
+        }
+
+        .step-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .step-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: .5rem;
+        }
+
+        .step-desc {
+            font-size: .88rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ===================== FADE-IN SCROLL ANIMATION ===================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .65s ease, transform .65s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up:nth-child(2) {
+            transition-delay: .1s;
+        }
+
+        .fade-up:nth-child(3) {
+            transition-delay: .2s;
+        }
+
+        .fade-up:nth-child(4) {
+            transition-delay: .3s;
+        }
+
+        /* ===================== SHINE TEXT ===================== */
+        .shine-text {
+            position: relative;
+            display: inline;
+            align-items: center;
+            color: #197bc2;
+            overflow: hidden;
+        }
+
+        .shine-text::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .8), transparent);
+            transform: skewX(-20deg);
+            animation: shine 5s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+
+            30% {
+                left: 120%;
+            }
+
+            100% {
+                left: 120%;
+            }
+        }
+
+        /* ===================== FEATURE CONTAINER ANIMATIONS ===================== */
+        .animated-text {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #197bc2;
+            transform: translateY(100%);
+            opacity: 0;
+        }
+
+        .animated-text.active {
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform .6s ease, opacity .6s ease;
+        }
+
+        .animated-text.exit {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform .6s ease, opacity .6s ease;
+        }
+
+        .wave-letter {
+            display: inline-block;
+            animation: waveIn .3s cubic-bezier(.33, 1, .68, 1) forwards;
+        }
+
+        .scale-in {
+            animation: scaleIn .4s ease-out forwards;
+        }
+
+        @keyframes waveIn {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* ===================== PRICING (SOFIA AI PLANS) ===================== */
+        .pricing-container {
+            max-width: 1420px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .pricing-header h1 {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            margin-bottom: .5rem;
+            color: #111827;
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+        }
+
+        .pricing-header .pricing-sub {
+            font-size: 1.05rem;
+            color: #6B7280;
+            margin-bottom: .5rem;
+            line-height: 1.6;
+        }
+
+        .pricing-header .highlight {
+            color: #197bc2;
+        }
+
+        .billing-toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .billing-label {
+            font-size: .88rem;
+            font-weight: 700;
+            color: #6B7280;
+            cursor: pointer;
+            transition: color .2s;
+        }
+
+        .billing-label.active {
+            color: #111827;
+        }
+
+        html.dark .billing-label {
+            color: #9aa3b5;
+        }
+
+        html.dark .billing-label.active {
+            color: #e8edf5;
+        }
+
+        .billing-pill {
+            width: 52px;
+            height: 28px;
+            border-radius: 999px;
+            background: #197bc2;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: background .3s;
+            flex-shrink: 0;
+        }
+
+        .billing-pill::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+            transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        .billing-pill.yearly::after {
+            transform: translateX(24px);
+        }
+
+        .billing-save-tag {
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            background: #dcfce7;
+            color: #15803d;
+            padding: .2rem .6rem;
+            border-radius: 999px;
+            white-space: nowrap;
+        }
+
+        html.dark .billing-save-tag {
+            background: rgba(22, 101, 52, .4);
+            color: #a7f3d0;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            align-items: start;
+        }
+
+        @media(max-width: 900px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .plan-card {
+            position: relative;
+            border-radius: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform .3s, box-shadow .3s;
+            overflow: visible;
+        }
+
+        .plan-card.style-free {
+            background: #f0fdf4;
+            border: 2px solid #6ee7b7;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, .10);
+        }
+
+        .plan-card.style-standard {
+            background: #ffffff;
+            border: 1.5px solid #E5E7EB;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .07);
+        }
+
+        .plan-card.style-premium {
+            background: #393939;
+            border: 2.5px solid #10B981;
+            color: #fff;
+            box-shadow: 0 20px 60px #10B98147;
+        }
+
+        .plan-card.style-premium:hover {
+            transform: translateY(-13px);
+        }
+
+        html.dark .plan-card.style-free {
+            background: #0f2718;
+            border-color: rgba(110, 231, 183, .3);
+        }
+
+        html.dark .plan-card.style-standard {
+            background: #1e2330;
+            border-color: rgba(255, 255, 255, .08);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .3);
+        }
+
+        html.dark .plan-card.style-premium {
+            background: #0f1929;
+            border-color: #10B981;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: .35rem 1.2rem;
+            border-radius: 999px;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .06em;
+            white-space: nowrap;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+        }
+
+        .plan-badge.green {
+            background: #10B981;
+            color: #fff;
+        }
+
+        .plan-badge.blue {
+            background: #197bc2;
+            color: #fff;
+        }
+
+        .plan-badge.gold {
+            background: #FFC439;
+            color: #111;
+        }
+
+        .plan-header {
+            padding: 2rem 1.75rem 0px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .plan-pricing {
+            padding: 0px 1.75rem 0px;
+            min-height: 310px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+
+        .plan-body {
+            padding: .75rem 1.75rem 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .plan-card.style-premium .plan-body {
+            padding-top: .75rem;
+        }
+
+        .plan-name {
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin-bottom: .45rem;
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+            color: #111827;
+        }
+
+        .plan-card.style-premium .plan-name {
+            color: #fff;
+        }
+
+        html.dark .plan-card.style-free .plan-name {
+            color: #e8edf5;
+        }
+
+        html.dark .plan-card.style-standard .plan-name {
+            color: #e8edf5;
+        }
+
+        .plan-description {
+            font-size: .88rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: #6B7280;
+        }
+
+        .plan-card.style-premium .plan-description {
+            color: #94a3b8;
+        }
+
+        html.dark .plan-card.style-free .plan-description {
+            color: #4ade80;
+        }
+
+        html.dark .plan-card.style-standard .plan-description {
+            color: #9aa3b5;
+        }
+
+        .discount-chips {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.1rem;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .72rem;
+            font-weight: 800;
+            padding: .25rem .7rem;
+            border-radius: 999px;
+            letter-spacing: .04em;
+            white-space: nowrap;
+        }
+
+        .chip-off {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .chip-free {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .chip-incl {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .chip-studio {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        .plan-card.style-premium .chip-off {
+            background: #FFC439;
+            color: #111;
+        }
+
+        .plan-card.style-premium .chip-incl {
+            background: rgba(167, 243, 208, .15);
+            color: #6ee7b7;
+        }
+
+        .plan-card.style-premium .chip-studio {
+            background: rgba(249, 168, 212, .12);
+            color: #f9a8d4;
+        }
+
+        html.dark .chip-off {
+            background: rgba(254, 243, 199, .10);
+            color: #fbbf24;
+        }
+
+        html.dark .chip-free {
+            background: rgba(74, 222, 128, .10);
+            color: #4ade80;
+        }
+
+        html.dark .chip-incl {
+            background: rgba(167, 243, 208, .10);
+            color: #6ee7b7;
+        }
+
+        .pricing-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .price-original {
+            font-size: .95rem;
+            text-decoration: line-through;
+            color: #9CA3AF;
+            margin-bottom: .15rem;
+        }
+
+        .plan-card.style-premium .price-original {
+            color: #64748b;
+        }
+
+        html.dark .price-original {
+            color: #475569;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: flex-end;
+            gap: .5rem;
+            flex-wrap: wrap;
+        }
+
+        .price-main {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+            color: #111827;
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+        }
+
+        .price-main.free-color {
+            color: #10B981;
+        }
+
+        .plan-card.style-premium .price-main {
+            color: #fff;
+        }
+
+        html.dark .plan-card.style-free .price-main {
+            color: #4ade80;
+        }
+
+        html.dark .plan-card.style-standard .price-main {
+            color: #e8edf5;
+        }
+
+        .price-period {
+            font-size: .85rem;
+            color: #6B7280;
+            font-weight: 500;
+            padding-bottom: .4rem;
+        }
+
+        .plan-card.style-premium .price-period {
+            color: #94a3b8;
+        }
+
+        html.dark .price-period {
+            color: #9aa3b5;
+        }
+
+        .price-note {
+            font-size: .8rem;
+            color: #9CA3AF;
+            margin-top: .5rem;
+            line-height: 1.55;
+        }
+
+        .plan-card.style-premium .price-note {
+            color: #fff;
+        }
+
+        html.dark .price-note {
+            color: #475569;
+        }
+
+        .discount-detail {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            flex-wrap: wrap;
+            font-size: .78rem;
+            color: #6B7280;
+            margin-top: .35rem;
+        }
+
+        .discount-detail .dd-pct {
+            font-weight: 800;
+            color: #10B981;
+        }
+
+        .plan-card.style-premium .discount-detail {
+            color: #94a3b8;
+        }
+
+        html.dark .discount-detail {
+            color: #9aa3b5;
+        }
+
+        .special-premium-note {
+            background: rgba(16, 185, 129, .12);
+            border-radius: 12px;
+            padding: .6rem .8rem;
+            margin: .8rem 0;
+            font-size: .78rem;
+            font-weight: 600;
+            text-align: center;
+            color: #166534;
+        }
+
+        .plan-card.style-premium .special-premium-note {
+            background: rgba(16, 185, 129, .18);
+            color: #6ee7b7;
+        }
+
+        .plan-cta {
+            display: block;
+            width: 100%;
+            padding: .9rem 1rem;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all .25s ease;
+            font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+            margin-bottom: 1.6rem;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .plan-cta.cta-blue {
+            background: #197bc2;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(25, 123, 194, .35);
+        }
+
+        .plan-cta.cta-blue:hover {
+            background: #37acff;
+            transform: translateY(-2px);
+        }
+
+        .plan-cta.cta-green {
+            background: #10B981;
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, .35);
+        }
+
+        .plan-cta.cta-green:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .plan-cta.cta-outline {
+            background: transparent;
+            color: #197bc2;
+            border: 2px solid #197bc2;
+        }
+
+        .plan-cta.cta-outline:hover {
+            background: rgba(25, 123, 194, .06);
+            transform: translateY(-2px);
+        }
+
+        html.dark .plan-cta.cta-outline {
+            color: #37acff;
+            border-color: rgba(55, 172, 255, .45);
+        }
+
+        html.dark .plan-cta.cta-outline:hover {
+            background: rgba(55, 172, 255, .08);
+        }
+
+        .plan-divider {
+            height: 1px;
+            margin: 0 0 1.5rem;
+            background: #E5E7EB;
+        }
+
+        .plan-card.style-premium .plan-divider {
+            background: rgba(255, 255, 255, .10);
+        }
+
+        .plan-card.style-free .plan-divider {
+            background: #a7f3d0;
+        }
+
+        html.dark .plan-card.style-standard .plan-divider {
+            background: rgba(255, 255, 255, .06);
+        }
+
+        html.dark .plan-card.style-free .plan-divider {
+            background: rgba(74, 222, 128, .2);
+        }
+
+        .features-section-label {
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+            color: #9CA3AF;
+            margin-bottom: .9rem;
+        }
+
+        .plan-card.style-premium .features-section-label {
+            color: #475569;
+        }
+
+        html.dark .features-section-label {
+            color: #334155;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: .9rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: .65rem;
+        }
+
+        .feature-icon {
+            flex-shrink: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: .18rem;
+        }
+
+        .feature-icon.inc {
+            background: #10B981;
+        }
+
+        .feature-icon.exc-std {
+            background: #F3F4F6;
+        }
+
+        .feature-icon.exc-free {
+            background: #d1fae5;
+        }
+
+        .feature-icon.exc-prem {
+            background: rgba(255, 255, 255, .07);
+        }
+
+        html.dark .feature-icon.exc-std {
+            background: rgba(255, 255, 255, .05);
+        }
+
+        .feature-icon svg {
+            width: .78rem;
+            height: .78rem;
+            stroke-width: 3;
+        }
+
+        .feature-icon.inc svg {
+            stroke: #fff;
+        }
+
+        .feature-icon.exc-std svg {
+            stroke: #D1D5DB;
+        }
+
+        .feature-icon.exc-free svg {
+            stroke: #6ee7b7;
+        }
+
+        .feature-icon.exc-prem svg {
+            stroke: #374151;
+        }
+
+        html.dark .feature-icon.exc-std svg {
+            stroke: #334155;
+        }
+
+        .feature-text {
+            font-size: .84rem;
+            line-height: 1.5;
+        }
+
+        .feature-text.inc-std {
+            color: #111827;
+            font-weight: 500;
+        }
+
+        .feature-text.inc-free {
+            color: #166534;
+            font-weight: 500;
+        }
+
+        .feature-text.inc-prem {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .feature-text.exc-std {
+            color: #CBD5E1;
+            text-decoration: line-through;
+        }
+
+        .feature-text.exc-free {
+            color: #6ee7b7;
+            text-decoration: line-through;
+        }
+
+        .feature-text.exc-prem {
+            color: #334155;
+            text-decoration: line-through;
+        }
+
+        html.dark .feature-text.inc-std {
+            color: #e8edf5;
+        }
+
+        html.dark .feature-text.exc-std {
+            color: #334155;
+        }
+
+        html.dark .feature-text.inc-free {
+            color: #4ade80;
+        }
+
+        html.dark .feature-text.exc-free {
+            color: rgba(74, 222, 128, .35);
+        }
+
+        .plan-footer-note {
+            margin-top: auto;
+            padding-top: 1.2rem;
+            border-top: 1px dashed #E5E7EB;
+            font-size: .78rem;
+            line-height: 1.6;
+            color: #9CA3AF;
+            font-style: italic;
+        }
+
+        .plan-card.style-premium .plan-footer-note {
+            border-top-color: rgba(255, 255, 255, .08);
+            color: #bbbbbb;
+        }
+
+        .plan-card.style-free .plan-footer-note {
+            border-top-color: #a7f3d0;
+            color: #4B7A5A;
+        }
+
+        html.dark .plan-footer-note {
+            color: #475569;
+            border-top-color: rgba(255, 255, 255, .06);
+        }
+
+        html.dark .plan-card.style-free .plan-footer-note {
+            color: #4ade80;
+            border-top-color: rgba(74, 222, 128, .2);
+        }
+
+        .pricing-footer {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .pricing-footer p {
+            font-size: .875rem;
+            color: #6B7280;
+        }
+
+        html.dark .pricing-footer p {
+            color: #9aa3b5;
+        }
+
+        html.dark #pricing {
+            background: #252b3b !important;
+        }
+
+        footer {
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, .97);
+            backdrop-filter: blur(18px);
+            padding: 1.5rem 2rem 2rem;
+            z-index: 999;
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+            box-shadow: var(--shadow-md);
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            font-size: .95rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-decoration: none;
+            padding: .5rem 0;
+            border-bottom: 1px solid #f0f4f8;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--blue);
+        }
+
+        @media(max-width: 1024px) {
+            .detail-wrap {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .detail-wrap.reverse {
+                direction: ltr;
+            }
+
+            .float-card.bottom-right {
+                right: 0;
+                bottom: -1rem;
+            }
+
+            .float-card.bottom-left {
+                left: 0;
+                bottom: -1rem;
+            }
+
+            .plans-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        #particle-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: background .35s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            padding: 0 3px;
+        }
+
+        .theme-toggle::after {
+            content: '☀️';
+            font-size: .7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+            transition: transform .35s cubic-bezier(.34, 1.56, .64, 1);
+            line-height: 1;
+        }
+
+        .dark .theme-toggle {
+            background: #3b4a6b;
+        }
+
+        .dark .theme-toggle::after {
+            content: '🌙';
+            transform: translateX(20px);
+        }
+
+        html.dark {
+            --white: #1e2330;
+            --light: #252b3b;
+            --dark: #e8edf5;
+            --gray: #9aa3b5;
+            --shadow-sm: 0 2px 12px rgba(0, 0, 0, .25);
+            --shadow-md: 0 8px 32px rgba(0, 0, 0, .35);
+            --shadow-lg: 0 24px 64px rgba(0, 0, 0, .45);
+        }
+
+        html.dark body {
+            background: #1e2330;
+            color: #e8edf5;
+        }
+
+        html.dark header {
+            background: rgba(30, 35, 48, 0.90);
+            border-bottom-color: rgba(255, 255, 255, .06);
+        }
+
+        html.dark .nav-links a {
+            color: #9aa3b5;
+        }
+
+        html.dark .nav-links a:hover {
+            color: #37acff;
+        }
+
+        html.dark .btn-outline {
+            border-color: rgba(55, 172, 255, .55);
+            color: #37acff;
+        }
+
+        html.dark .btn-outline:hover {
+            background: rgba(55, 172, 255, .12);
+            color: #37acff;
+        }
+
+        html.dark .hamburger i {
+            color: #9aa3b5;
+        }
+
+        html.dark .theme-toggle {
+            background: #3b4a6b;
+        }
+
+        html.dark .theme-toggle::after {
+            content: '🌙';
+            transform: translateX(20px);
+        }
+
+        html.dark .mobile-menu {
+            background: rgba(30, 35, 48, .97);
+            border-bottom-color: rgba(255, 255, 255, .06);
+        }
+
+        html.dark .mobile-menu a {
+            color: #e8edf5;
+            border-bottom-color: rgba(255, 255, 255, .06);
+        }
+
+        html.dark #hero {
+            background: #1e2330;
+        }
+
+        html.dark #hero::before {
+            background:
+                radial-gradient(ellipse 80% 60% at 15% 90%, rgba(25, 123, 194, .12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 10%, rgba(255, 196, 57, .07) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 60% at 90% 70%, rgba(16, 185, 129, .07) 0%, transparent 50%);
+        }
+
+        html.dark #hero::after {
+            background-image: radial-gradient(rgba(55, 172, 255, .10) 1.2px, transparent 1.2px);
+        }
+
+        html.dark .hero-badge {
+            background: rgba(55, 172, 255, .10);
+            border-color: rgba(55, 172, 255, .22);
+            color: #37acff;
+        }
+
+        html.dark .hero-word {
+            color: #e8edf5;
+        }
+
+        html.dark .hero-word.sofia-word {
+            color: #37acff;
+        }
+
+        html.dark .hero-sub {
+            color: #9aa3b5;
+        }
+
+        html.dark .stat-number {
+            color: #e8edf5;
+        }
+
+        html.dark .stat-label {
+            color: #9aa3b5;
+        }
+
+        html.dark .scroll-mouse {
+            border-color: rgba(55, 172, 255, .3);
+        }
+
+        html.dark .hero-scroll-hint {
+            color: #9aa3b5;
+        }
+
+        html.dark #trust {
+            background: #252b3b;
+            border-color: rgba(255, 255, 255, .06);
+        }
+
+        html.dark .trust-label {
+            color: #5a6480;
+        }
+
+        html.dark .trust-badge {
+            color: #9aa3b5;
+        }
+
+        html.dark #features {
+            background: #252b3b;
+        }
+
+        html.dark .feat-card {
+            background: #1e2330;
+            border-color: rgba(255, 255, 255, .07);
+        }
+
+        html.dark .feat-title {
+            color: #e8edf5;
+        }
+
+        html.dark .feat-desc {
+            color: #9aa3b5;
+        }
+
+        html.dark .section-title {
+            color: #e8edf5;
+        }
+
+        html.dark .section-sub {
+            color: #9aa3b5;
+        }
+
+        html.dark .section-tag {
+            background: rgba(55, 172, 255, .10);
+            color: #37acff;
+        }
+
+        html.dark .detail-section {
+            background: #1e2330;
+        }
+
+        html.dark .detail-section.alt {
+            background: #252b3b;
+        }
+
+        html.dark .detail-title {
+            color: #e8edf5;
+        }
+
+        html.dark .detail-text {
+            color: #9aa3b5;
+        }
+
+        html.dark .detail-list li {
+            color: #e8edf5;
+        }
+
+        html.dark .float-card {
+            background: #2a3145;
+            border-color: rgba(255, 255, 255, .08);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .4);
+        }
+
+        html.dark .float-card-header {
+            border-bottom-color: rgba(255, 255, 255, .08);
+        }
+
+        html.dark .float-card-header span {
+            color: #9aa3b5;
+        }
+
+        html.dark .float-card p {
+            color: #e8edf5;
+        }
+
+        html.dark .float-card .tag-label {
+            color: #9aa3b5;
+        }
+
+        html.dark .float-card .tag-value {
+            color: #e8edf5;
+        }
+
+        html.dark #process {
+            background: #252b3b;
+        }
+
+        html.dark .step-card {
+            background: #1e2330;
+            border-color: rgba(255, 255, 255, .07);
+        }
+
+        html.dark .step-title {
+            color: #e8edf5;
+        }
+
+        html.dark .step-desc {
+            color: #9aa3b5;
+        }
+
+        html.dark footer {
+            background: #1a1f2e;
+            border-top-color: rgba(255, 255, 255, .06);
+        }
+
+        html.dark footer h3 {
+            color: #e8edf5 !important;
+        }
+
+        html.dark footer a,
+        html.dark footer span,
+        html.dark footer button {
+            color: #9aa3b5 !important;
+        }
+
+        html.dark ::-webkit-scrollbar-track {
+            background: #1e2330;
+        }
+
+        html.dark .shine-text::after {
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, .12), transparent);
+        }
+
+        /* =====================================================================
+           ============== CHECKOUT / CARRITO  (NUEVO)  =========================
+           ===================================================================== */
+
+        /* ---- Logo placeholder (reemplazable por <img>) ---- */
+        .checkout-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+            background: rgba(255, 255, 255, .9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(25, 123, 194, .10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: .9rem 1.5rem;
+        }
+
+        html.dark .checkout-topbar {
+            background: rgba(30, 35, 48, .9);
+            border-bottom-color: rgba(255, 255, 255, .06);
+        }
+
+        .brand-logo {
+            height: 45px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* ---- Layout maestro: contenido + panel detalles ---- */
+        .checkout-shell {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 6rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 0px;
+            gap: 0;
+            transition: grid-template-columns .45s cubic-bezier(.4, 0, .2, 1);
+            align-items: start;
+        }
+
+        .checkout-shell.details-open {
+            grid-template-columns: minmax(0, 1fr) 400px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1100px) {
+
+            .checkout-shell,
+            .checkout-shell.details-open {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+        }
+
+        .checkout-main {
+            min-width: 0;
+        }
+
+        .checkout-heading {
+            text-align: center;
+            margin-bottom: 2.2rem;
+        }
+
+        .checkout-heading h1 {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: .4rem;
+            line-height: 1.15;
+        }
+
+        .checkout-heading h1 .hl {
+            color: var(--blue);
+        }
+
+        .checkout-heading p {
+            color: var(--gray);
+            font-size: 1rem;
+            max-width: 520px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .block-label {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin: 2.6rem 0 1.1rem;
+        }
+
+
+        .block-sub {
+            font-size: .9rem;
+            color: var(--gray);
+            margin: -.6rem 0 1.3rem;
+            line-height: 1.55;
+        }
+
+        /* ---- Selector de planes Numart (estilo tarjetas) ---- */
+        .numart-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.1rem;
+        }
+
+        @media (max-width: 980px) {
+            .numart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .nplan {
+            position: relative;
+            border-radius: 1.25rem;
+            border: 2px solid #E5E7EB;
+            background: var(--white);
+            padding: 1.5rem 1.4rem 1.3rem;
+            cursor: pointer;
+            transition: border-color .25s, box-shadow .25s, transform .25s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        html.dark .nplan {
+            background: #1e2330;
+            border-color: rgba(255, 255, 255, .08);
+        }
+
+        .nplan:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(25, 123, 194, .4);
+        }
+
+        .nplan.selected {
+            border-color: var(--blue);
+            box-shadow: 0 12px 40px rgba(25, 123, 194, .22);
+        }
+
+        .nplan.featured {
+            background: #393939;
+            border-color: #393939;
+            color: #fff;
+        }
+
+        .nplan.featured.selected {
+            border-color: var(--green);
+            box-shadow: 0 16px 48px #10B98140;
+        }
+
+        .nplan.featured .nplan-name,
+        .nplan.featured .nplan-price-main {
+            color: #fff;
+        }
+
+        .nplan.featured .nplan-desc {
+            color: #cbd5e1;
+        }
+
+        .nplan-ribbon {
+            position: absolute;
+            top: -12px;
+            left: 1.2rem;
+            background: var(--green);
+            color: #ffffff;
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            padding: .3rem .85rem;
+            border-radius: 999px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .nplan-ribbon.blue {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .nplan-head {
+            display: flex;
+            align-items: flex-start;
+            gap: .7rem;
+            margin-bottom: .55rem;
+        }
+
+        .nplan-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            flex-shrink: 0;
+            margin-top: .15rem;
+            position: relative;
+            transition: border-color .2s;
+        }
+
+        .nplan.featured .nplan-radio {
+            border-color: #475569;
+        }
+
+        .nplan.selected .nplan-radio {
+            border-color: var(--blue);
+        }
+
+        .nplan.featured.selected .nplan-radio {
+            border-color: var(--grren);
+        }
+
+        .nplan.selected .nplan-radio::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: var(--blue);
+        }
+
+        .nplan.featured.selected .nplan-radio::after {
+            background: var(--green);
+        }
+
+        .nplan-name {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+
+        .nplan-desc {
+            font-size: .82rem;
+            color: var(--gray);
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            min-height: 2.5em;
+        }
+
+        .nplan-price {}
+
+        .nplan-price-original {
+            font-size: .82rem;
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+
+        .nplan-price-row {
+            display: flex;
+            align-items: baseline;
+            gap: .3rem;
+            flex-wrap: wrap;
+        }
+
+        .nplan-price-main {
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .nplan-price-per {
+            font-size: .8rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .nplan-meta {
+            font-size: .76rem;
+            color: var(--gray);
+            margin-top: .55rem;
+            line-height: 1.5;
+        }
+
+        .nplan.featured .nplan-meta {
+            color: #94a3b8;
+        }
+
+        /* ---- Botón "Mostrar beneficios" + cortina ---- */
+        .benefits-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            margin-top: 1.1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #E5E7EB;
+            font-size: .78rem;
+            font-weight: 800;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: var(--blue);
+            cursor: pointer;
+            user-select: none;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .nplan.featured .benefits-toggle {
+            color: var(--green);
+            border-top-color: rgba(255, 255, 255, .12);
+        }
+
+        .benefits-toggle .chev {
+            transition: transform .4s cubic-bezier(.4, 0, .2, 1);
+            font-size: 1.1rem;
+        }
+
+        .benefits-toggle.open .chev {
+            transform: rotate(180deg);
+        }
+
+        .benefits-curtain {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows .45s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .benefits-curtain.open {
+            grid-template-rows: 1fr;
+        }
+
+        .benefits-curtain-inner {
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .benefits-list {
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+            padding-top: 1rem;
+        }
+
+        .benefit-row {
+            display: flex;
+            align-items: flex-start;
+            gap: .55rem;
+            font-size: .82rem;
+            line-height: 1.45;
+            color: var(--dark);
+        }
+
+        .nplan.featured .benefit-row {
+            color: #e2e8f0;
+        }
+
+        .benefit-row .bicon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: .15rem;
+            color: var(--green);
+        }
+
+        .benefit-row.off {
+            color: #9CA3AF;
+            text-decoration: line-through;
+        }
+
+        .benefit-row.off .bicon {
+            color: #cbd5e1;
+        }
+
+        .nplan.featured .benefit-row.off {
+            color: #475569;
+        }
+
+        /* ---- Sección SOFIA (servicios adicionales) ---- */
+        .sofia-wrap {
+            background: var(--light);
+            border: 1.5px solid rgba(25, 123, 194, .12);
+            border-radius: .75rem;
+            padding: 1.6rem;
+        }
+
+        html.dark .sofia-wrap {
+            background: #252b3b;
+            border-color: rgba(255, 255, 255, .07);
+        }
+
+        .sofia-intro {
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            margin-bottom: 1.4rem;
+            flex-wrap: wrap;
+        }
+
+        .sofia-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .sofia-avatar svg {
+            width: 26px;
+            height: 26px;
+            color: #393939;
+        }
+
+        .sofia-intro-text h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .sofia-intro-text p {
+            font-size: .85rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .sofia-locked-pill {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .72rem;
+            font-weight: 700;
+            color: var(--gray);
+            background: rgba(0, 0, 0, .04);
+            padding: .35rem .8rem;
+            border-radius: 999px;
+        }
+
+        html.dark .sofia-locked-pill {
+            background: rgba(255, 255, 255, .06);
+        }
+
+        .sofia-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: .9rem;
+        }
+
+        @media (max-width: 720px) {
+            .sofia-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .sofia-opt {
+            position: relative;
+            border-radius: 1rem;
+            border: 2px solid #E5E7EB;
+            background: var(--white);
+            padding: 1.15rem 1.1rem;
+            cursor: pointer;
+            transition: border-color .22s, box-shadow .22s, transform .22s, opacity .22s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        html.dark .sofia-opt {
+            background: #1e2330;
+            border-color: rgba(255, 255, 255, .08);
+        }
+
+        .sofia-opt:hover {
+            transform: translateY(-3px);
+            border-color: rgba(25, 123, 194, .4);
+        }
+
+        .sofia-opt.selected {
+            border-color: var(--blue);
+            box-shadow: 0 10px 30px rgba(25, 123, 194, .18);
+        }
+
+        .sofia-opt.disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            pointer-events: none;
+            filter: grayscale(.3);
+        }
+
+        .sofia-opt-badge {
+            position: absolute;
+            top: -10px;
+            right: 1rem;
+            font-size: .62rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            padding: .25rem .65rem;
+            border-radius: 999px;
+        }
+
+        .sofia-opt-badge.green {
+            background: #10B981;
+            color: #fff;
+        }
+
+        .sofia-opt-badge.blue {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .sofia-opt-badge.gold {
+            background: var(--gold);
+            color: #111;
+        }
+
+        .sofia-opt-head {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            margin-bottom: .35rem;
+        }
+
+        .sofia-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            flex-shrink: 0;
+            position: relative;
+            transition: all .2s;
+        }
+
+        .sofia-opt.selected .sofia-check {
+            border-color: var(--blue);
+            background: var(--blue);
+        }
+
+        .sofia-opt.selected .sofia-check::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid #fff;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .sofia-opt-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .sofia-opt-desc {
+            font-size: .76rem;
+            color: var(--gray);
+            line-height: 1.45;
+            margin-bottom: .85rem;
+            min-height: 3.2em;
+        }
+
+        .sofia-opt-price {
+            margin-top: auto;
+        }
+
+        .sofia-opt-orig {
+            font-size: .74rem;
+            text-decoration: line-through;
+            color: #9CA3AF;
+        }
+
+        .sofia-opt-now {
+            display: flex;
+            align-items: baseline;
+            gap: .25rem;
+        }
+
+        .sofia-opt-now b {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--dark);
+        }
+
+        .sofia-opt-now.free b {
+            color: var(--green);
+        }
+
+        .sofia-opt-now span {
+            font-size: .72rem;
+            color: var(--gray);
+        }
+
+        .sofia-opt-note {
+            font-size: .7rem;
+            color: var(--blue);
+            font-weight: 700;
+            margin-top: .4rem;
+            line-height: 1.4;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* =====================================================================
+           ============== PANEL DETALLES DE LA COMPRA  =========================
+           ===================================================================== */
+        .details-panel {
+            position: sticky;
+            top: 90px;
+            background: var(--white);
+            border: 1.5px solid #E5E7EB;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+            max-height: calc(100vh - 110px);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(20px);
+            pointer-events: none;
+            transition: opacity .4s ease, transform .4s ease;
+        }
+
+        .checkout-shell.details-open .details-panel {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        html.dark .details-panel {
+            background: #1e2330;
+            border-color: rgba(255, 255, 255, .08);
+        }
+
+        @media (max-width: 1100px) {
+            .details-panel {
+                position: relative;
+                top: 0;
+                max-height: none;
+                margin-top: 2rem;
+            }
+
+            .checkout-shell .details-panel {
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+                display: none;
+            }
+
+            .checkout-shell.details-open .details-panel {
+                display: flex;
+            }
+        }
+
+        .dp-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.4rem;
+            border-bottom: 1px solid #f0f0f0;
+            flex-shrink: 0;
+        }
+
+        html.dark .dp-header {
+            border-bottom-color: rgba(255, 255, 255, .06);
+        }
+
+        .dp-header h2 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .dp-header h2 svg {
+            width: 18px;
+            height: 18px;
+            color: var(--blue);
+        }
+
+        .dp-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s, color .2s;
+        }
+
+        .dp-close:hover {
+            background: rgba(0, 0, 0, .05);
+            color: var(--dark);
+        }
+
+        html.dark .dp-close:hover {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .dp-close svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .dp-body {
+            overflow-y: auto;
+            padding: 1.2rem 1.4rem;
+            flex: 1;
+        }
+
+        .dp-empty {
+            text-align: center;
+            color: var(--gray);
+            padding: 2.5rem 1rem;
+            font-size: .9rem;
+            line-height: 1.6;
+        }
+
+        .dp-empty svg {
+            width: 46px;
+            height: 46px;
+            color: #d1d5db;
+            margin-bottom: .8rem;
+        }
+
+        /* Cabecera de item del carrito (categoría -> objeto) */
+        .cart-line {
+            border: 1.5px solid #eef2f6;
+            border-radius: 1rem;
+            padding: .95rem 1rem;
+            margin-bottom: .8rem;
+            background: var(--white);
+            transition: border-color .2s;
+        }
+
+        html.dark .cart-line {
+            background: #232a3a;
+            border-color: rgba(255, 255, 255, .06);
+        }
+
+        .cart-line.highlight {
+            border-color: rgba(53, 53, 53, 0.35);
+            background: rgb(58 58 58 / 87%);
+        }
+
+        .cart-line-cat {
+            font-size: .66rem;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: .25rem;
+        }
+
+        .cart-line.highlight .cart-line-cat {
+            color:  #70c3ff;
+        }
+
+        .cart-line-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: .6rem;
+        }
+
+        .cart-line-name {
+            font-size: .95rem;
+            font-weight: 800;
+            color: var(--dark);
+            line-height: 1.25;
+        }
+
+        .cart-line.highlight .cart-line-name {
+            color: var(--white);
+        }
+
+        .cart-line-meta {
+            font-size: .74rem;
+            color: var(--gray);
+            margin-top: .15rem;
+            line-height: 1.45;
+        }
+        .cart-line.highlight .cart-line-meta {
+            color: #d1d1d1;
+        }
+
+        .cart-line-price {
+            text-align: right;
+            flex-shrink: 0;
+        }
+        
+
+        .cart-line-price b {
+            font-size: .95rem;
+            font-weight: 800;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+        .cart-line.highlight .cart-line-price b {
+            color: var(--white);
+        }
+
+        .cart-line-price s {
+            display: block;
+            font-size: .72rem;
+            color: #9CA3AF;
+        }
+
+        .cart-line-price .free,
+        .cart-line.highlight .cart-line-price .free {
+            color: var(--green);
+        }
+
+    
+
+        .cart-line-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: .3rem;
+            font-size: .68rem;
+            font-weight: 700;
+            color: #166534;
+            background: #dcfce7;
+            padding: .22rem .55rem;
+            border-radius: 999px;
+            margin-top: .5rem;
+        }
+
+        html.dark .cart-line-tag {
+            background: rgba(22, 101, 52, .25);
+            color: #86efac;
+        }
+
+        /* Caja de oferta "sube a Premium" */
+        .upsell-box {
+            border: 1.5px dashed var(--blue);
+            border-radius: 1rem;
+            padding: .85rem 1rem;
+            margin-bottom: .8rem;
+            background: rgba(25, 123, 194, .05);
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            cursor: pointer;
+            transition: background .2s, transform .15s;
+        }
+
+        .upsell-box:hover {
+            background: rgba(25, 123, 194, .1);
+            transform: translateY(-1px);
+        }
+
+        .upsell-box svg {
+            width: 26px;
+            height: 26px;
+            color: var(--blue);
+            flex-shrink: 0;
+        }
+
+        .upsell-box .ut {
+            font-size: .8rem;
+            color: var(--dark);
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .upsell-box .ut b {
+            color: var(--blue);
+        }
+
+        /* Rotador de beneficios (uno a la vez) */
+        .benefit-rotator {
+            position: relative;
+            height: 52px;
+            border-radius: .8rem;
+            background: linear-gradient(135deg, rgba(25, 123, 194, .08), rgba(16, 185, 129, .08));
+            overflow: hidden;
+            margin-bottom: .9rem;
+        }
+
+        .benefit-rotator-item {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            padding: 0 .95rem;
+            font-size: .8rem;
+            font-weight: 600;
+            color: var(--dark);
+            transform: translateY(100%);
+            opacity: 0;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        html.dark .benefit-rotator-item {
+            color: #e8edf5;
+        }
+
+        .benefit-rotator-item.in {
+            transform: translateY(0);
+            opacity: 1;
+            transition: transform .55s cubic-bezier(.22, .68, 0, 1.2), opacity .55s ease;
+        }
+
+        .benefit-rotator-item.out {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: transform .55s cubic-bezier(.55, 0, .9, .4), opacity .55s ease;
+        }
+
+        .benefit-rotator-item svg {
+            width: 18px;
+            height: 18px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        /* Cupón */
+        .coupon-zone {
+            margin: .3rem 0 1rem;
+        }
+
+        .coupon-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--blue);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: .3rem 0;
+        }
+
+        .coupon-toggle svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .coupon-input-row {
+            display: none;
+            gap: .5rem;
+            margin-top: .6rem;
+        }
+
+        .coupon-input-row.open {
+            display: flex;
+        }
+
+        .coupon-input-row input {
+            flex: 1;
+            min-width: 0;
+            padding: .65rem .8rem;
+            border: 1.5px solid #E5E7EB;
+            border-radius: .7rem;
+            font-family: inherit;
+            font-size: .85rem;
+            text-transform: uppercase;
+            background: var(--white);
+            color: var(--dark);
+            transition: border-color .2s;
+        }
+
+        html.dark .coupon-input-row input {
+            background: #232a3a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #e8edf5;
+        }
+
+        .coupon-input-row input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+
+        .coupon-apply {
+            padding: .65rem 1.1rem;
+            border: none;
+            border-radius: .7rem;
+            background: var(--blue);
+            color: #fff;
+            font-weight: 700;
+            font-size: .82rem;
+            cursor: pointer;
+            font-family: inherit;
+            white-space: nowrap;
+            transition: background .2s;
+        }
+
+        .coupon-apply:hover {
+            background: var(--blue-light);
+        }
+
+        .coupon-msg {
+            font-size: .76rem;
+            margin-top: .5rem;
+            font-weight: 600;
+        }
+
+        .coupon-msg.ok {
+            color: var(--green);
+        }
+
+        .coupon-msg.err {
+            color: #ef4444;
+        }
+
+        .coupon-applied {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            margin-top: .6rem;
+            padding: .55rem .8rem;
+            border-radius: .7rem;
+            background: #dcfce7;
+            font-size: .8rem;
+            font-weight: 700;
+            color: #166534;
+        }
+
+        html.dark .coupon-applied {
+            background: rgba(22, 101, 52, .25);
+            color: #86efac;
+        }
+
+        .coupon-applied.show {
+            display: flex;
+        }
+
+        .coupon-applied button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        /* Tamaño fijo para íconos SVG inline dentro del carrito
+           (evita que se agranden dentro de flex sin width/height) */
+        .coupon-applied svg,
+        .cart-line-tag svg,
+        .toast svg,
+        .dp-total-due svg {
+            width: 15px;
+            height: 15px;
+            flex-shrink: 0;
+        }
+
+        .coupon-applied span {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        /* Totales */
+        .dp-totals {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 1rem;
+            margin-top: .4rem;
+        }
+
+        html.dark .dp-totals {
+            border-top-color: rgba(255, 255, 255, .06);
+        }
+
+        .dp-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: .86rem;
+            color: var(--gray);
+            margin-bottom: .5rem;
+        }
+
+        .dp-total-row .v {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .dp-total-row.discount .v {
+            color: var(--green);
+        }
+
+        .dp-total-row.grand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--dark);
+            border-top: 1px dashed #E5E7EB;
+            padding-top: .8rem;
+            margin-top: .6rem;
+        }
+
+        html.dark .dp-total-row.grand {
+            border-top-color: rgba(255, 255, 255, .1);
+        }
+
+        .dp-total-row.grand .v {
+            color: var(--blue);
+            font-size: 1.4rem;
+            font-weight: 900;
+        }
+
+        .dp-total-due {
+            font-size: .76rem;
+            color: var(--gray);
+            margin-top: .3rem;
+            line-height: 1.5;
+        }
+
+        /* Tabla de facturación */
+        .billing-section {
+            margin-top: 1.2rem;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 1.1rem;
+        }
+
+        html.dark .billing-section {
+            border-top-color: rgba(255, 255, 255, .06);
+        }
+
+        .billing-title {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .82rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: .8rem;
+        }
+
+        .billing-title svg {
+            width: 16px;
+            height: 16px;
+            color: var(--blue);
+        }
+
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .78rem;
+            border-radius: .8rem;
+            overflow: hidden;
+            border: 1px solid #eef2f6;
+        }
+
+        html.dark .billing-table {
+            border-color: rgba(255, 255, 255, .08);
+        }
+
+        .billing-table th {
+            text-align: left;
+            font-weight: 700;
+            color: var(--gray);
+            background: #f8fafc;
+            padding: .55rem .7rem;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+        }
+
+        html.dark .billing-table th {
+            background: #232a3a;
+            color: #9aa3b5;
+        }
+
+        .billing-table td {
+            padding: .6rem .7rem;
+            border-top: 1px solid #eef2f6;
+            color: var(--dark);
+        }
+
+        html.dark .billing-table td {
+            border-top-color: rgba(255, 255, 255, .06);
+            color: #e8edf5;
+        }
+
+        .billing-table td b {
+            font-weight: 800;
+        }
+
+        .billing-table .bt-date {
+            color: var(--gray);
+            font-size: .74rem;
+        }
+
+        .billing-table tr.first-row td {
+            background: rgba(25, 123, 194, .04);
+        }
+
+        /* ---- Modal de confirmación de upgrade ---- */
+        .upgrade-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(17, 24, 39, .55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+        }
+
+        .upgrade-modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .upgrade-modal-card {
+            background: var(--white);
+            border-radius: 1.5rem;
+            max-width: 420px;
+            width: 100%;
+            padding: 2rem 1.8rem 1.8rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(24px) scale(.97);
+            transition: transform .35s cubic-bezier(.22, .68, 0, 1.2);
+            position: relative;
+        }
+
+        html.dark .upgrade-modal-card {
+            background: #1e2330;
+        }
+
+        .upgrade-modal-overlay.show .upgrade-modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .upgrade-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+        }
+
+        .upgrade-modal-close:hover {
+            background: rgba(0, 0, 0, .06);
+        }
+
+        html.dark .upgrade-modal-close:hover {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .upgrade-modal-close svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .upgrade-modal-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(25, 123, 194, .12), rgba(16, 185, 129, .12));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.1rem;
+        }
+
+        .upgrade-modal-icon svg {
+            width: 26px;
+            height: 26px;
+            color: var(--blue);
+        }
+
+        .upgrade-modal-card h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: .35rem;
+        }
+
+        html.dark .upgrade-modal-card h3 {
+            color: #e8edf5;
+        }
+
+        .upgrade-modal-card .um-sub {
+            font-size: .88rem;
+            color: var(--gray);
+            margin-bottom: 1.2rem;
+            line-height: 1.55;
+        }
+
+        .um-benefit-list {
+            list-style: none;
+            margin-bottom: 1.2rem;
+        }
+
+        .um-benefit-list li {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            font-size: .875rem;
+            color: var(--dark);
+            padding: .38rem 0;
+        }
+
+        html.dark .um-benefit-list li {
+            color: #e8edf5;
+        }
+
+        .um-benefit-list li svg {
+            width: 17px;
+            height: 17px;
+            color: var(--green);
+            flex-shrink: 0;
+        }
+
+        .um-price-note {
+            font-size: .82rem;
+            color: var(--gray);
+            margin-bottom: 1.4rem;
+            padding: .65rem .8rem;
+            background: rgba(25, 123, 194, .06);
+            border-radius: .8rem;
+            line-height: 1.5;
+        }
+
+        .um-price-note b {
+            color: var(--dark);
+        }
+
+        html.dark .um-price-note b {
+            color: #e8edf5;
+        }
+
+        .um-btn-primary {
+            width: 100%;
+            padding: .9rem 1rem;
+            border: none;
+            border-radius: 999px;
+            background: var(--blue);
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background .2s, transform .15s;
+            margin-bottom: .7rem;
+            box-shadow: 0 6px 20px rgba(25, 123, 194, .4);
+        }
+
+        .um-btn-primary:hover {
+            background: var(--blue-light);
+            transform: translateY(-1px);
+        }
+
+        .um-btn-ghost {
+            width: 100%;
+            padding: .75rem 1rem;
+            border: none;
+            background: none;
+            color: var(--blue);
+            font-family: inherit;
+            font-size: .9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color .2s;
+        }
+
+        .um-btn-ghost:hover {
+            color: var(--blue-dark);
+        }
+
+        /* ---- Benefit rotator inside plan line ---- */
+        .plan-line-rotator-wrap {
+            padding: .65rem .85rem .7rem;
+            background: linear-gradient(135deg, rgba(25, 123, 194, .07), rgba(16, 185, 129, .07));
+            border-radius: .8rem;
+            margin-top: .7rem;
+        }
+
+        .plan-line-rotator-label {
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: .4rem;
+        }
+
+        .plan-line-rotator-wrap .benefit-rotator {
+            height: 34px;
+            margin-bottom: 0;
+            background: none;
+        }
+
+        .plan-line-rotator-wrap .benefit-rotator-item {
+            font-size: .75rem;
+            padding: 0;
+        }
+
+        .plan-line-rotator-wrap .benefit-rotator-item svg {
+            width: 14px;
+            height: 14px;
+        }
+
+       /* upgrade link inside plan line */
+.plan-line-upgrade-link {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: .3rem;
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--blue);
+    cursor: pointer;
+    margin-top: .55rem;
+    text-decoration: none;
+    background: none;
+    border: none;
+    font-family: inherit;
+    padding: 0;
+    transition: color .2s;
+}
+
+        .plan-line-upgrade-link:hover {
+            color: var(--blue-dark);
+        }
+
+        .plan-line-upgrade-link svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* ---- Summary lines before totals ---- */
+        .summary-lines {
+            margin-bottom: .35rem;
+            padding: .6rem .85rem;
+            background: var(--light);
+            border-radius: .85rem;
+        }
+
+        html.dark .summary-lines {
+            background: #232a3a;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: .5rem;
+            padding: .32rem 0;
+            font-size: .83rem;
+            border-bottom: 1px solid rgba(0, 0, 0, .06);
+        }
+
+        html.dark .summary-line {
+            border-bottom-color: rgba(255, 255, 255, .06);
+        }
+
+        .summary-line:last-child {
+            border-bottom: none;
+        }
+
+        .summary-line-name {
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .summary-line-price {
+            font-weight: 800;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        .summary-line-price.free {
+            color: var(--green);
+        }
+
+        .cart-line-inner-divider {
+            height: 1px;
+            background: rgba(25, 123, 194, .12);
+            margin: .8rem -.05rem .7rem;
+            border-radius: 1px;
+        }
+
+        .cart-line.highlight .cart-line-inner-divider {
+       
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        html.dark .cart-line-inner-divider {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        /* Botón único de pago */
+        .dp-footer {
+            padding: 1.1rem 1.4rem 1.4rem;
+            border-top: 1px solid #f0f0f0;
+            flex-shrink: 0;
+            background: var(--white);
+        }
+
+        html.dark .dp-footer {
+            background: #1e2330;
+            border-top-color: rgba(255, 255, 255, .06);
+        }
+
+        .pay-final-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 999px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 1.02rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            transition: background .2s, transform .15s, opacity .2s;
+        }
+
+        .pay-final-btn:hover:not(:disabled) {
+            background: var(--blue-dark);
+        }
+
+        .pay-final-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .pay-final-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ---- Botón flotante para abrir detalles (cuando cerrado) ---- */
+        .floating-cart-btn {
+            position: fixed;
+            bottom: 1.4rem;
+            right: 1.4rem;
+            z-index: 950;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            padding: .9rem 1.4rem;
+            font-family: inherit;
+            font-weight: 800;
+            font-size: .9rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            gap: .6rem;
+            box-shadow: 0 10px 30px rgba(25, 123, 194, .45);
+            transition: transform .2s, background .2s;
+        }
+
+        .floating-cart-btn:hover {
+            transform: translateY(-3px);
+            background: var(--blue-light);
+        }
+
+        .floating-cart-btn.show {
+            display: inline-flex;
+            animation: heroFadeUp .4s ease;
+        }
+
+        .floating-cart-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .floating-cart-badge {
+            background: var(--gold);
+            color: #111;
+            border-radius: 999px;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 .4rem;
+            font-size: .75rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* =====================================================================
+           ============== FORMULARIO DE REGISTRO  ==============================
+           ===================================================================== */
+        .reg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(17, 24, 39, .55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 2rem 1rem;
+            overflow-y: auto;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+        }
+
+        .reg-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .reg-card {
+            background: var(--white);
+            border-radius: 1.5rem;
+            max-width: 480px;
+            width: 100%;
+            padding: 2rem 1.8rem 2.2rem;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(20px) scale(.98);
+            transition: transform .35s cubic-bezier(.22, .68, 0, 1.2);
+            margin: auto;
+        }
+
+        html.dark .reg-card {
+            background: #1e2330;
+        }
+
+        .reg-overlay.show .reg-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .reg-top {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .reg-back {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+            flex-shrink: 0;
+        }
+
+        .reg-back:hover {
+            background: rgba(0, 0, 0, .05);
+        }
+
+        html.dark .reg-back:hover {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .reg-back svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .reg-logo {
+            height: 34px;
+            width: auto;
+        }
+
+        .reg-card h2 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: .4rem;
+        }
+
+        .reg-card .reg-intro {
+            font-size: .88rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .reg-field {
+            margin-bottom: 1.1rem;
+        }
+
+        .reg-field label {
+            display: block;
+            font-size: .82rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: .4rem;
+        }
+
+        .reg-field label .req {
+            color: #ef4444;
+        }
+
+        .reg-field input,
+        .reg-field select {
+            width: 100%;
+            padding: .8rem .9rem;
+            border: 1.5px solid #E5E7EB;
+            border-radius: .8rem;
+            font-family: inherit;
+            font-size: .9rem;
+            background: var(--white);
+            color: var(--dark);
+            transition: border-color .2s;
+        }
+
+        html.dark .reg-field input,
+        html.dark .reg-field select {
+            background: #232a3a;
+            border-color: rgba(255, 255, 255, .1);
+            color: #e8edf5;
+        }
+
+        .reg-field input:focus,
+        .reg-field select:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(25, 123, 194, .12);
+        }
+
+        .reg-field input.invalid,
+        .reg-field select.invalid {
+            border-color: #ef4444;
+        }
+
+        .reg-field .err-hint {
+            font-size: .74rem;
+            color: #ef4444;
+            margin-top: .35rem;
+            display: none;
+        }
+
+        .reg-field .err-hint.show {
+            display: block;
+        }
+
+        .reg-phone-row {
+            display: flex;
+            gap: .5rem;
+        }
+
+        .reg-phone-row .reg-cc {
+            width: 90px;
+            flex-shrink: 0;
+        }
+
+        .reg-checks {
+            margin: 1.3rem 0 .5rem;
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+        }
+
+        .reg-check {
+            display: flex;
+            align-items: flex-start;
+            gap: .6rem;
+            font-size: .82rem;
+            color: var(--dark);
+            line-height: 1.45;
+            cursor: pointer;
+        }
+
+        html.dark .reg-check {
+            color: #cbd5e1;
+        }
+
+        .reg-check input {
+            width: 18px;
+            height: 18px;
+            margin-top: .1rem;
+            accent-color: var(--blue);
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .reg-check a {
+            color: var(--blue);
+            font-weight: 700;
+        }
+
+        .reg-divider {
+            height: 1px;
+            background: #eef2f6;
+            margin: 1.2rem 0;
+        }
+
+        html.dark .reg-divider {
+            background: rgba(255, 255, 255, .08);
+        }
+
+        /* Resumen mini dentro del registro */
+        .reg-summary {
+            background: var(--light);
+            border-radius: 1rem;
+            padding: 1rem 1.1rem;
+            margin-bottom: 1.4rem;
+        }
+
+        html.dark .reg-summary {
+            background: #252b3b;
+        }
+
+        .reg-summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .82rem;
+            color: var(--gray);
+            margin-bottom: .4rem;
+        }
+
+        .reg-summary-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .reg-summary-row.total {
+            border-top: 1px dashed #d8dde4;
+            padding-top: .5rem;
+            margin-top: .5rem;
+            font-weight: 800;
+            color: var(--dark);
+            font-size: .95rem;
+        }
+
+        html.dark .reg-summary-row.total {
+            border-top-color: rgba(255, 255, 255, .1);
+        }
+
+        .reg-summary-row.total .v {
+            color: var(--blue);
+        }
+
+        .reg-pay-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 999px;
+            background: var(--blue);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            box-shadow: 0 6px 20px rgba(25, 123, 194, .4);
+            transition: background .2s, transform .15s, opacity .2s;
+        }
+
+        .reg-pay-btn:hover:not(:disabled) {
+            background: var(--blue-light);
+            transform: translateY(-2px);
+        }
+
+        .reg-pay-btn:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+
+        .reg-pay-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--dark);
+            color: var(--white);
+            padding: .8rem 1.3rem;
+            border-radius: 999px;
+            font-size: .85rem;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s, transform .3s;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        html.dark .toast {
+            background: #f8fafc;
+            color: #111827;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast svg {
+            width: 18px;
+            height: 18px;
+            color: var(--green);
+        }
+
+        .feature-icon.not-included.standard {
+            background: #E5E7EB;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============ BARRA SUPERIOR / LOGO (reemplaza el <img> por tu logo) ============ -->
+    <div class="checkout-topbar">
+        <img class="brand-logo" src="https://imagenes.numart.com.co/v3IsoTypeNumart.png" alt="Logo">
+    </div>
+
+    <section id="checkout" style="background:#f8fafc; min-height:100vh;">
+
+        <div class="checkout-shell" id="checkoutShell">
+
+            <!-- ─────────── COLUMNA PRINCIPAL ─────────── -->
+            <div class="checkout-main">
+
+                <div class="checkout-heading fade-up">
+
+                    <h1>Arma tu plan <span class="hl">ideal</span></h1>
+                    <p>Selecciona el plan que mejor se adapte a tu negocio y potencia tu contabilidad con
+                        inteligencia artificial.</p>
+                </div>
+
+                <!-- Toggle de facturación -->
+                <div class="billing-toggle-wrap fade-up">
+                    <span class="billing-label active" id="lblMonthly">Mensual</span>
+                    <button class="billing-pill" id="billingPill" aria-label="Cambiar ciclo de facturación"></button>
+                    <span class="billing-label" id="lblYearly">Anual</span>
+                    <span class="billing-save-tag">Ahorra hasta 20%</span>
+                </div>
+
+                <!-- Selector de planes Numart -->
+                <div class="numart-grid" id="numartGrid"></div>
+
+                <!-- Servicios adicionales: SOFIA -->
+                <div class="block-label"><span class="emoji"><svg xmlns="http://www.w3.org/2000/svg" fill="#ff9f68"
+                            width="30px" height="30px" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M11.1758045,11.5299649 C11.7222481,10.7630248 11.6612694,9.95529555 11.2823626,8.50234466 C10.5329929,5.62882187 10.8313891,4.05382867 13.4147321,2.18916004 L14.6756139,1.27904986 L14.9805807,2.80388386 C15.3046861,4.42441075 15.8369398,5.42670671 17.2035766,7.35464078 C17.2578735,7.43122022 17.2578735,7.43122022 17.3124108,7.50814226 C19.2809754,10.2854144 20,11.9596204 20,15 C20,18.6883517 16.2713564,22 12,22 C7.72840879,22 4,18.6888043 4,15 C4,14.9310531 4.00007066,14.9331427 3.98838852,14.6284506 C3.89803284,12.2718054 4.33380946,10.4273676 6.09706666,8.43586022 C6.46961415,8.0150872 6.8930834,7.61067534 7.36962714,7.22370749 L8.42161802,6.36945926 L8.9276612,7.62657706 C9.30157948,8.55546878 9.73969716,9.28566491 10.2346078,9.82150804 C10.6537848,10.2753538 10.9647401,10.8460665 11.1758045,11.5299649 Z M7.59448531,9.76165711 C6.23711779,11.2947332 5.91440928,12.6606068 5.98692012,14.5518252 C6.00041903,14.9039019 6,14.8915108 6,15 C6,17.5278878 8.78360021,20 12,20 C15.2161368,20 18,17.527472 18,15 C18,12.4582072 17.4317321,11.1350292 15.6807305,8.66469725 C15.6264803,8.58818014 15.6264803,8.58818014 15.5719336,8.51124844 C14.5085442,7.0111098 13.8746802,5.96758691 13.4553336,4.8005211 C12.7704786,5.62117775 12.8107447,6.43738988 13.2176374,7.99765534 C13.9670071,10.8711781 13.6686109,12.4461713 11.0852679,14.31084 L9.61227259,15.3740546 L9.50184911,13.5607848 C9.43129723,12.4022487 9.16906461,11.6155508 8.76539217,11.178492 C8.36656566,10.7466798 8.00646835,10.2411426 7.68355027,9.66278925 C7.65342985,9.69565638 7.62374254,9.72861259 7.59448531,9.76165711 Z" />
+                        </svg></span>Servicios adicionales</div>
+                <p class="block-sub">Añade a SOFIA, nuestra inteligencia artificial contable, y lleva tu gestión al
+                    siguiente nivel.</p>
+
+                <div class="sofia-wrap" id="sofiaWrap">
+                    <div class="sofia-intro">
+                        <div class="sofia-avatar">
+                            <svg fill="#197bc2" stroke="#197bc2" viewBox="0 0 24 24" stroke-width="1.5">
+                                <path fill stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z" />
+                            </svg>
+                        </div>
+                        <div class="sofia-intro-text">
+                            <h3>SOFIA — Asistente Contable IA</h3>
+                            <p>Tu copiloto inteligente para contabilidad, facturación y reportes.</p>
+                        </div>
+                        <span class="sofia-locked-pill" id="sofiaLockPill" style="display:none;">
+                            <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                stroke-width="2.2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                            </svg>
+                            Incluido gratis
+                        </span>
+                    </div>
+                    <div class="sofia-options" id="sofiaOptions"></div>
+                </div>
+
+                <div class="pricing-footer fade-up" style="margin-top:2rem;">
+                    <p style="font-size:.82rem;color:#6B7280;">* Los precios mostrados son en COP. SOFIA Base
+                        disponible solo para clientes con un plan activo de Numart.<br>
+                        <u><a href="https://help.numart.com.co/terminos-y-condiciones" style="color:#197bc2;">Términos y
+                                condiciones aplican.</a></u>
+                    </p>
+                </div>
+            </div>
+
+            <!-- ─────────── PANEL DETALLES DE LA COMPRA ─────────── -->
+            <aside class="details-panel" id="detailsPanel">
+                <div class="dp-header">
+                    <h2>
+
+                        Detalles de la compra
+                    </h2>
+                    <button class="dp-close" id="dpClose" aria-label="Cerrar detalles">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="dp-body" id="dpBody">
+                    <!-- Render dinámico -->
+                </div>
+
+                <div class="dp-footer" id="dpFooter" style="display:none;">
+                    <button class="pay-final-btn" id="continueBtn">
+
+                        <span id="continueBtnText">Continuar con el pago</span>
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Botón flotante para reabrir detalles -->
+    <button class="floating-cart-btn" id="floatingCart">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+        </svg>
+        Ver detalles
+        <span class="floating-cart-badge" id="floatingBadge">1</span>
+    </button>
+
+    <!-- ============ FORMULARIO DE REGISTRO (modal) ============ -->
+    <div class="reg-overlay" id="regOverlay">
+        <div class="reg-card">
+            <div class="reg-top">
+                <button class="reg-back" id="regBack" aria-label="Volver">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                    </svg>
+                </button>
+                <img class="reg-logo" src="https://imagenes.numart.com.co/v3IsoTypeNumart.png"" alt=" Logo">
+            </div>
+
+            <h2>Crea tu cuenta para continuar</h2>
+            <p class="reg-intro">Necesitamos algunos datos para enviarte tus comprobantes, claves de acceso y la
+                información de tu suscripción.</p>
+
+            <!-- Mini resumen -->
+            <div class="reg-summary" id="regSummary"></div>
+
+            <div class="reg-field">
+                <label>Tipo de identificación <span class="req">*</span></label>
+                <select id="regIdType">
+                    <option value="">Selecciona…</option>
+                    <option value="CC">Cédula de ciudadanía</option>
+                    <option value="CE">Cédula de extranjería</option>
+                    <option value="NIT">NIT</option>
+                    <option value="PAS">Pasaporte</option>
+                </select>
+                <div class="err-hint" id="errIdType">Debe ser completado.</div>
+            </div>
+
+            <div class="reg-field">
+                <label>Documento de identificación <span class="req">*</span></label>
+                <input type="text" id="regId" placeholder="Ingresa tu documento" inputmode="numeric">
+                <div class="err-hint" id="errId">Debe ser completado.</div>
+            </div>
+
+            <div class="reg-field">
+                <label>Nombre completo <span class="req">*</span></label>
+                <input type="text" id="regName" placeholder="Ingresa tu nombre completo">
+                <div class="err-hint" id="errName">Debe ser completado.</div>
+            </div>
+
+            <div class="reg-field">
+                <label>Correo electrónico <span class="req">*</span></label>
+                <input type="email" id="regEmail" placeholder="ejemplo@correo.com">
+                <div class="err-hint" id="errEmail">Ingresa un correo válido.</div>
+            </div>
+
+            <div class="reg-field">
+                <label>Número de celular <span class="req">*</span></label>
+                <div class="reg-phone-row">
+                    <select id="regCC" class="reg-cc">
+                        <option value="+57">🇨🇴 +57</option>
+                        <option value="+1">🇺🇸 +1</option>
+                        <option value="+52">🇲🇽 +52</option>
+                        <option value="+34">🇪🇸 +34</option>
+                        <option value="+54">🇦🇷 +54</option>
+                    </select>
+                    <input type="tel" id="regPhone" placeholder="321 1234567" inputmode="numeric">
+                </div>
+                <div class="err-hint" id="errPhone">Ingresa un número válido.</div>
+            </div>
+
+            <div class="reg-field">
+                <label>Fecha de nacimiento</label>
+                <input type="date" id="regDob">
+            </div>
+
+            <div class="reg-checks">
+                <label class="reg-check">
+                    <input type="checkbox" id="regComms" checked>
+                    <span>Acepto recibir comunicaciones, ofertas y novedades por correo, SMS y WhatsApp.</span>
+                </label>
+                <label class="reg-check">
+                    <input type="checkbox" id="regTos">
+                    <span>He leído y acepto los <a href="https://help.numart.com.co/terminos-y-condiciones"
+                            target="_blank">Términos y Condiciones</a>. <span class="req">*</span></span>
+                </label>
+                <label class="reg-check">
+                    <input type="checkbox" id="regPriv">
+                    <span>He leído y acepto la <a href="https://help.numart.com.co/privacidad" target="_blank">Política
+                            de Privacidad</a> y el tratamiento de mis datos. <span class="req">*</span></span>
+                </label>
+            </div>
+
+            <div class="reg-divider"></div>
+
+            <button class="reg-pay-btn" id="regPayBtn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+                <span id="regPayText">Continuar con el pago</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ MODAL UPGRADE A PREMIUM ============ -->
+    <div class="upgrade-modal-overlay" id="upgradeModal">
+        <div class="upgrade-modal-card">
+            <button class="upgrade-modal-close" id="upgradeModalClose" aria-label="Cerrar">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="upgrade-modal-icon">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+            </div>
+            <h3>Cambia al Plan Premium</h3>
+            <p class="um-sub">Desbloquea todo el potencial de Numart con acceso ilimitado y SOFIA Smart incluida.</p>
+            <ul class="um-benefit-list">
+                <li>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    SOFIA Smart GRATIS
+                </li>
+                <li>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    Generador de pagos en linea*
+                </li>
+                <li>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    Sucursales y bodegas ilimitadas
+                </li>
+                <li>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    API de integración completa
+                </li>
+                <li>
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    API de integración
+                </li>
+            </ul>
+            <div class="um-price-note" id="upgradeModalPriceNote">Desde <b>$ 175.000 / mes</b> · Sin contratos de
+                permanencia</div>
+            <button class="um-btn-primary" id="upgradeModalConfirm">Cambiar al Plan Premium</button>
+            <button class="um-btn-ghost" id="upgradeModalKeep">Mantener plan actual</button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+    <script>
+        window.addEventListener('load', () => {
+            const words = document.querySelectorAll('.hero-word');
+            words.forEach(word => {
+                const delay = parseInt(word.dataset.delay || 0, 10);
+                setTimeout(() => {
+                    word.classList.add('loaded');
+                }, delay);
+            });
+        });
+    </script>
+
+    <script>
+        const fadeObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+        }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+        document.querySelectorAll('.fade-up').forEach(el => fadeObs.observe(el));
+    </script>
+    <script>
+        (function () {
+            'use strict';
+
+            /* =================================================================
+               DATOS — Planes Numart + SOFIA
+               ================================================================= */
+            const fmt = n => '$ ' + Number(n).toLocaleString('es-CO');
+            const fmtPlain = n => Number(n).toLocaleString('es-CO');
+
+            // --- Planes Numart (los 3 del HTML original) ---
+            const NUMART_PLANS = [
+                {
+                    id: 'premium',
+                    highlight: 'highlight',
+                    name: 'Plan Premium',
+                    desc: 'La solución más completa para empresas que no se detienen.',
+                    featured: true,
+                    ribbon: { text: 'El más ventajoso', cls: '' },
+                    sofiaDefault: 'smart',   // SOFIA incluida
+                    pricing: {
+                        isFree: false,
+                        monthlyFull: 175000,      // precio base de lista
+                        monthlyDiscount: false,   // ¿hay descuento promocional mensual?
+                        discountPct: 100,           // % de descuento mensual
+                        discountMonths: 1,        // meses con precio promocional
+                        annualDiscount: true,     // ¿descuento por pago anual?
+                        annualDiscPct: 20         // % descuento anual
+                    },
+                    benefits: [
+                        { t: 'SOFIA Smart — Asistente Contable Inteligente', on: true },
+                        { t: 'API de integración', on: true },
+                        { t: 'Reportes financieros avanzados en tiempo real', on: true },
+                        { t: 'Generador de pagos en linea*', on: true },
+                        { t: 'Contabilidad completa con registro automático', on: true },
+                        { t: 'Nómina electrónica integrada y validada ante la DIAN', on: true },
+                        { t: 'Sucursales ilimitadas con control independiente*', on: true },
+                        { t: 'Hasta 5.000 empleados + 2 Contador GRATIS*', on: true },
+                        { t: 'Afiliados ilimitadas', on: true },
+                        { t: 'Hasta 8 cajas por sucursal*', on: true },
+                        { t: 'Sistema POS con control de inventario integrado y validado ante la DIAN', on: true },
+                        { t: 'Ingresos ilimitados*', on: true },
+                        { t: 'Bodegas ilimitadas con gestión por ubicación', on: true },
+                        { t: 'Reportes básicos descargables en Excel y PDF', on: true },
+                        { t: 'Soporte 24/7 por chat y correo', on: true },
+                    ]
+                },
+                {
+                    id: 'pyme',
+                    highlight: '',
+                    name: 'Plan PYME',
+                    desc: 'Diseñado para empresas PYME en crecimiento.',
+                    featured: false,
+                    ribbon: { text: 'Recomendado', cls: 'blue' },
+                    sofiaDefault: 'base',
+                    pricing: {
+                        isFree: false,
+                        monthlyFull: 79900,
+                        monthlyDiscount: false,
+                        discountPct: 0,
+                        discountMonths: 1,
+                        annualDiscount: true,
+                        annualDiscPct: 20
+                    },
+                    benefits: [
+                        { t: 'SOFIA Base — Asistente Contable Inteligente', on: true },
+                        { t: 'API de integración', on: false },
+                        { t: 'Reportes financieros avanzados en tiempo real', on: false },
+                        { t: 'Generador de pagos en linea*', on: false },
+                        { t: 'Contabilidad limitada*', on: true },
+                        { t: 'Nómina electrónica integrada y validada ante la DIAN', on: true },
+                        { t: 'Hasta 3 sucursales con control independiente*', on: true },
+                        { t: 'Hasta 500 empleados + 1 Contador GRATIS*', on: true },
+                        { t: 'Afiliados ilimitadas', on: true },
+                        { t: 'Hasta 4 cajas por sucursal*', on: true },
+                        { t: 'Sistema POS con control de inventario integrado y validado ante la DIAN', on: true },
+                        { t: 'Ingresos ilimitados*', on: true },
+                        { t: 'Hasta 10 bodegas con gestión por ubicación', on: true },
+                        { t: 'Reportes básicos descargables en Excel y PDF', on: true },
+                        { t: 'Soporte 24/7 por chat y correo', on: true },
+                    ],
+                },
+                {
+                    id: 'lite',
+                    highlight: '',
+                    name: 'Plan Lite',
+                    desc: 'Ideal para emprendedores que inician.',
+                    featured: false,
+                    ribbon: null,
+                    sofiaDefault: 'base',
+                    pricing: {
+                        isFree: false,
+                        monthlyFull: 44900,
+                        monthlyDiscount: false,
+                        discountPct: 0,
+                        discountMonths: 1,
+                        annualDiscount: true,
+                        annualDiscPct: 20
+                    },
+                    benefits: [
+                        { t: 'SOFIA Base — Asistente Contable Inteligente', on: true },
+                        { t: 'API de integración', on: false },
+                        { t: 'Reportes financieros avanzados en tiempo real', on: false },
+                        { t: 'Generador de pagos en linea*', on: false },
+                        { t: 'Contabilidad limitada*', on: false },
+                        { t: 'Nómina electrónica integrada y validada ante la DIAN', on: false },
+                        { t: 'Hasta 3 sucursales con control independiente*', on: false },
+                        { t: 'Hasta 5 empleados + 1 Contador GRATIS*', on: true },
+                        { t: 'Hasta 50 Afiliados ', on: true },
+                        { t: 'Hasta 1 caja por sucursal*', on: true },
+                        { t: 'Sistema POS con control de inventario integrado y validado ante la DIAN', on: true },
+                        { t: 'Ingresos ilimitados*', on: true },
+                        { t: 'Hasta 2 bodegas con gestión por ubicación', on: true },
+                        { t: 'Reportes básicos descargables en Excel y PDF', on: true },
+                        { t: 'Soporte 24/7 por chat y correo', on: false },
+                    ],
+                }
+            ];
+
+            // --- SOFIA (los 3 niveles del HTML original) ---
+            // monthlyFull = precio normal de lista; premiumPrice = precio especial si tienes Premium
+            const SOFIA_PLANS = [
+                {
+                    id: 'base',
+                    name: 'SOFIA Base',
+                    desc: 'Asistente básico para consultas contables, facturación y reportes.',
+                    monthlyFull: 0,
+                    premiumPrice: 0,
+                    badge: { text: 'Gratis con Numart', cls: 'green' },
+                    isFree: true,
+                    requiresPlan: true
+                },
+                {
+                    id: 'smart',
+                    name: 'SOFIA Smart',
+                    desc: 'Memoria de sesión, aprende preferencias y sugerencias automáticas.',
+                    monthlyFull: 24900,
+                    premiumPrice: 0,            // incluida en Premium
+                    badge: { text: 'Recomendado', cls: 'blue' },
+                    isFree: false,
+                    requiresPlan: false
+                },
+                {
+                    id: 'studio',
+                    name: 'SOFIA Studio',
+                    desc: 'Personalización completa, memoria empresarial avanzada y automatizaciones.',
+                    monthlyFull: 69900,
+                    premiumPrice: 19900,        // precio especial Premium
+                    badge: { text: 'Poder total', cls: 'gold' },
+                    isFree: false,
+                    requiresPlan: false
+                }
+            ];
+
+            // --- Beneficios rotativos por plan (uno a la vez en el carrito) ---
+            const ROTATING_BENEFITS = {
+                premium: [
+                    'SOFIA Smart GRATIS',
+                    'Generador de pagos en linea',
+                    'Sucursales y bodegas ilimitadas',
+                    'Soporte prioritario 24/7',
+                    'API de integración completa'
+                ],
+                pyme: [
+                    'SOFIA Base incluida GRATIS',
+                    'Hasta 500 empleados + 1 Contador gratis',
+                    'POS validado ante la DIAN',
+                    'Soporte 24/7 por chat y correo'
+                ],
+                lite: [
+                    'SOFIA Base incluida GRATIS',
+                    'POS validado ante la DIAN',
+                    '1 Contador profesional gratis',
+                    'Reportes en Excel y PDF'
+                ]
+            };
+
+            // --- Cupones de descuento ---
+            // status: 'active' | 'expired' | 'used'
+            const COUPONS = {
+                'SOFIA10': { type: 'pct', value: 10, label: '10% de descuento', status: 'active' },
+                'SOFIA20': { type: 'pct', value: 20, label: '20% de descuento', status: 'active' },
+                'BIENVENIDO': { type: 'fixed', value: 15000, label: '$15.000 de descuento', status: 'active' },
+                'NUMART50': { type: 'pct', value: 50, label: '50% de descuento', status: 'active' },
+                'PROMO2023': { type: 'pct', value: 15, label: '15% de descuento', status: 'expired' },
+                'WELCOME1': { type: 'fixed', value: 10000, label: '$10.000 de descuento', status: 'used' }
+            };
+
+            /* =================================================================
+               ESTADO
+               ================================================================= */
+            const state = {
+                isYearly: false,
+                planId: null,        // plan Numart seleccionado
+                sofiaId: null,       // SOFIA seleccionada
+                coupon: null,        // {code, ...}
+                detailsOpen: false
+            };
+
+            /* =================================================================
+               💾  PERSISTENCIA DE ESTADO EN LA URL  (codificado / no textual)
+               =================================================================
+               Guarda TODO el progreso del checkout en un único query param `?s=`
+               de forma ofuscada (no legible a simple vista), para que al refrescar
+               la página no se pierdan los datos. También se respalda en
+               sessionStorage por si la URL se limpia.
+
+               Codificación: JSON -> claves abreviadas -> UTF-8 bytes ->
+               XOR con clave rotativa -> inversión -> Base64 URL-safe.
+               (La decodificación revierte exactamente estos pasos.)
+            */
+            const Persist = (function () {
+                const PARAM = 's';
+                const SS_KEY = '_nmt_ck';
+                const XKEY = [0x4e, 0x75, 0x6d, 0x41, 0x72, 0x74, 0x53, 0x66]; // "NumArtSf"
+
+                // --- helpers base64 url-safe sobre bytes ---
+                function bytesToB64url(bytes) {
+                    let bin = '';
+                    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+                    return btoa(bin).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+                }
+                function b64urlToBytes(str) {
+                    let s = str.replace(/-/g, '+').replace(/_/g, '/');
+                    while (s.length % 4) s += '=';
+                    const bin = atob(s);
+                    const out = new Uint8Array(bin.length);
+                    for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+                    return out;
+                }
+                function strToBytes(str) {
+                    return new TextEncoder().encode(str);
+                }
+                function bytesToStr(bytes) {
+                    return new TextDecoder().decode(bytes);
+                }
+                // XOR simétrico con clave rotativa + mezcla del índice
+                function xorCipher(bytes) {
+                    const out = new Uint8Array(bytes.length);
+                    for (let i = 0; i < bytes.length; i++) {
+                        out[i] = bytes[i] ^ XKEY[i % XKEY.length] ^ (i & 0xff);
+                    }
+                    return out;
+                }
+                function reverseBytes(bytes) {
+                    const out = new Uint8Array(bytes.length);
+                    for (let i = 0; i < bytes.length; i++) out[i] = bytes[bytes.length - 1 - i];
+                    return out;
+                }
+
+                function encode(obj) {
+                    try {
+                        const json = JSON.stringify(obj);
+                        let b = strToBytes(json);
+                        b = xorCipher(b);
+                        b = reverseBytes(b);
+                        // prefijo de versión "1" para futura compatibilidad
+                        return '1' + bytesToB64url(b);
+                    } catch (e) { return ''; }
+                }
+                function decode(token) {
+                    try {
+                        if (!token) return null;
+                        const ver = token[0];
+                        const payload = token.slice(1);
+                        if (ver !== '1') return null;
+                        let b = b64urlToBytes(payload);
+                        b = reverseBytes(b);
+                        b = xorCipher(b);  // XOR es su propia inversa
+                        const json = bytesToStr(b);
+                        return JSON.parse(json);
+                    } catch (e) { return null; }
+                }
+
+                // mapea el estado completo (UI incluida) a un objeto compacto
+                function buildSnapshot() {
+                    const g = id => { const el = document.getElementById(id); return el ? el.value : ''; };
+                    const chk = id => { const el = document.getElementById(id); return el ? !!el.checked : false; };
+
+                    // beneficios desplegados (si alguna cortina está abierta)
+                    const anyBenefitsOpen = !!document.querySelector('.benefits-curtain.open');
+
+                    const snap = {
+                        // núcleo
+                        y: state.isYearly ? 1 : 0,
+                        p: state.planId || null,
+                        a: state.sofiaId || null,      // a = AI/sofia
+                        c: state.coupon ? state.coupon.code : null,
+                        // UI
+                        d: state.detailsOpen ? 1 : 0,
+                        b: anyBenefitsOpen ? 1 : 0,
+                        um: (document.getElementById('upgradeModal') &&
+                            document.getElementById('upgradeModal').classList.contains('show')) ? 1 : 0,
+                        rg: (document.getElementById('regOverlay') &&
+                            document.getElementById('regOverlay').classList.contains('show')) ? 1 : 0,
+                        // datos del formulario de registro
+                        f: {
+                            it: g('regIdType'),
+                            id: g('regId'),
+                            nm: g('regName'),
+                            em: g('regEmail'),
+                            cc: g('regCC'),
+                            ph: g('regPhone'),
+                            db: g('regDob'),
+                            k1: chk('regComms'),
+                            k2: chk('regTos'),
+                            k3: chk('regPriv')
+                        }
+                    };
+                    return snap;
+                }
+
+                let saveTimer = null;
+                function save() {
+                    // throttle ligero para no saturar history en cada tecla
+                    clearTimeout(saveTimer);
+                    saveTimer = setTimeout(doSave, 180);
+                }
+                function doSave() {
+                    const snap = buildSnapshot();
+                    const token = encode(snap);
+                    if (!token) return;
+                    try {
+                        const url = new URL(window.location.href);
+                        url.searchParams.set(PARAM, token);
+                        window.history.replaceState(null, '', url.toString());
+                    } catch (e) { /* noop */ }
+                    try { sessionStorage.setItem(SS_KEY, token); } catch (e) { /* noop */ }
+                }
+
+                function load() {
+                    let token = null;
+                    try {
+                        const url = new URL(window.location.href);
+                        token = url.searchParams.get(PARAM);
+                    } catch (e) { /* noop */ }
+                    if (!token) {
+                        try { token = sessionStorage.getItem(SS_KEY); } catch (e) { /* noop */ }
+                    }
+                    return decode(token);
+                }
+
+                return { save, load, encode, decode };
+            })();
+
+            // se asigna después de definir renderAll/aplicar; expuesto aquí:
+            function persistSave() { Persist.save(); }
+
+            /* =================================================================
+               ICONOS SVG
+               ================================================================= */
+            const IC/*ons*/ = {
+                check: '<div class="feature-icon inc"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg></div>',
+                x: '<div class="feature-icon not-included standard"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg></div>',
+                checkSm: '<svg fill="none" width="12px" height="12px" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>',
+                spark: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/></svg>',
+                up: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>',
+                cart: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272"/></svg>',
+                ticket: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"/></svg>',
+                cal: '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>'
+            };
+
+            /* =================================================================
+               CÁLCULO DE PRECIOS
+               ================================================================= */
+            /**
+             * planPrice(plan) → { now, full, origMonthly, promoMonthly, per, discLabel, annualDisc }
+             *
+             * Lógica:
+             *  1. Precio base mensual = pricing.monthlyFull
+             *  2. Si pricing.monthlyDiscount → hay precio promocional mensual
+             *     promoMonthly = monthlyFull * (1 - discountPct/100)
+             *     Se aplica durante discountMonths meses, luego vuelve a monthlyFull
+             *  3. Si state.isYearly && pricing.annualDiscount
+             *     Se aplica annualDiscPct sobre el total anual (12 × monthlyFull)
+             *  4. Si isFree → precio 0 siempre
+             */
+            function planPrice(plan) {
+                const p = plan.pricing;
+
+                if (p.isFree) {
+                    return { now: 0, full: 0, origMonthly: 0, promoMonthly: null, per: '/ mes', discLabel: null, annualDisc: 0 };
+                }
+
+                const base = p.monthlyFull;
+
+                // ── Precio mensual efectivo (con o sin promo) ──────────────────
+                const promoMonthly = p.monthlyDiscount
+                    ? Math.round(base * (1 - p.discountPct / 100))
+                    : null;
+                const effectiveMonthly = promoMonthly !== null ? promoMonthly : base;
+
+                // ── Ciclo anual ────────────────────────────────────────────────
+                if (state.isYearly && p.annualDiscount) {
+                    const fullAnnual = base * 12;
+                    const nowAnnual = Math.round(fullAnnual * (1 - p.annualDiscPct / 100));
+                    return {
+                        now: nowAnnual,
+                        full: fullAnnual,
+                        origMonthly: base,
+                        promoMonthly: null,          // promo mensual no aplica en anual
+                        per: '/ año',
+                        discLabel: `${p.annualDiscPct}% OFF`,
+                        annualDisc: p.annualDiscPct
+                    };
+                }
+
+                // ── Ciclo mensual ─────────────────────────────────────────────
+                return {
+                    now: effectiveMonthly,
+                    full: base,
+                    origMonthly: base,
+                    promoMonthly: promoMonthly,
+                    per: '/ mes',
+                    discLabel: p.monthlyDiscount ? `${p.discountPct}% OFF · ${p.discountMonths} ${p.discountMonths === 1 ? 'mes' : 'meses'}` : null,
+                    annualDisc: 0
+                };
+            }
+
+            // precio de SOFIA según plan Numart elegido
+            function sofiaPrice(sofia) {
+                const isPremium = state.planId === 'premium';
+                // precio "vigente" mensual
+                const monthly = isPremium ? sofia.premiumPrice : sofia.monthlyFull;
+                if (state.isYearly) {
+                    return { now: monthly * 12, full: sofia.monthlyFull * 12, per: '/ año' };
+                }
+                return { now: monthly, full: sofia.monthlyFull, per: '/ mes' };
+            }
+
+            function getPlan(id) { return NUMART_PLANS.find(p => p.id === id); }
+            function getSofia(id) { return SOFIA_PLANS.find(s => s.id === id); }
+
+            /* =================================================================
+               RENDER — Tarjetas de planes Numart
+               ================================================================= */
+            function renderNumartPlans() {
+                const grid = document.getElementById('numartGrid');
+                grid.innerHTML = NUMART_PLANS.map(plan => {
+                    const pr = planPrice(plan);
+                    const sel = state.planId === plan.id;
+                    const ribbon = plan.ribbon
+                        ? `<span class="nplan-ribbon ${plan.ribbon.cls}">${plan.ribbon.text}</span>` : '';
+
+                    // Precio tachado: solo si hay descuento activo
+                    const showStrike = pr.now < pr.full;
+                    const orig = showStrike
+                        ? `<div class="nplan-price-original">${fmt(pr.full)}</div>` : '';
+
+                    // Nota bajo el precio
+                    let metaHTML = '';
+                    if (pr.discLabel) {
+                        metaHTML = `<div class="nplan-meta"><b style="color:var(--green)">${pr.discLabel}</b></div>`;
+                    } else if (plan.pricing.monthlyDiscount && !state.isYearly) {
+                        // hay promo pero no activa (raro, por si acaso)
+                        metaHTML = `<div class="nplan-meta">Sin contratos de permanencia</div>`;
+                    } else {
+                        metaHTML = `<div class="nplan-meta">Sin contratos de permanencia</div>`;
+                    }
+
+                    // Etiqueta adicional de promo mensual
+                    const promoTag = (!state.isYearly && pr.promoMonthly !== null)
+                        ? `<div class="nplan-meta" style="margin-top:.2rem;font-size:.72rem;color:var(--gray)">Luego ${fmt(pr.origMonthly)}${pr.per}</div>`
+                        : '';
+
+                    const benefits = plan.benefits.map(b =>
+                        `<div class="benefit-row ${b.on ? '' : 'off'}">${b.on ? IC.check : IC.x}<span>${b.t}</span></div>`
+                    ).join('');
+
+                    return `
+          <div class="nplan ${plan.featured ? 'featured' : ''} ${sel ? 'selected' : ''}" data-plan="${plan.id}">
+            ${ribbon}
+            <div class="nplan-head">
+              <div class="nplan-radio"></div>
+              <div>
+                <div class="nplan-name">${plan.name}</div>
+              </div>
+            </div>
+            <div class="nplan-desc">${plan.desc}</div>
+            <div class="nplan-price">
+              ${orig}
+              <div class="nplan-price-row">
+                <span class="nplan-price-main">${fmt(pr.now)}</span>
+                <span class="nplan-price-per">${pr.per}</span>
+              </div>
+              ${metaHTML}
+              ${promoTag}
+            </div>
+
+            <button class="benefits-toggle" data-toggle="${plan.id}">
+              <span>Mostrar beneficios</span>
+              <span class="chev">⌄</span>
+            </button>
+            <div class="benefits-curtain" data-curtain="${plan.id}">
+              <div class="benefits-curtain-inner">
+                <div class="benefits-list">${benefits}</div>
+              </div>
+            </div>
+          </div>`;
+                }).join('');
+
+                // listeners: selección de plan
+                grid.querySelectorAll('.nplan').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('.benefits-toggle') || e.target.closest('.benefits-curtain')) return;
+                        selectPlan(card.dataset.plan);
+                    });
+                });
+                // listeners: cortina de beneficios — abrir/cerrar TODOS al mismo tiempo
+                grid.querySelectorAll('.benefits-toggle').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        // Determine target state from the clicked button
+                        const willOpen = !btn.classList.contains('open');
+                        // Apply to ALL plans
+                        grid.querySelectorAll('.benefits-toggle').forEach(b => {
+                            const id = b.dataset.toggle;
+                            const curtain = grid.querySelector(`[data-curtain="${id}"]`);
+                            if (curtain) curtain.classList.toggle('open', willOpen);
+                            b.classList.toggle('open', willOpen);
+                            b.querySelector('span').textContent = willOpen ? 'Ocultar beneficios' : 'Mostrar beneficios';
+                        });
+                        persistSave();
+                    });
+                });
+            }
+
+            /* =================================================================
+               RENDER — Opciones SOFIA
+               ================================================================= */
+            function renderSofiaOptions() {
+                const wrap = document.getElementById('sofiaOptions');
+                const planSelected = !!state.planId;
+                const isPremium = state.planId === 'premium';
+
+                wrap.innerHTML = SOFIA_PLANS.map(s => {
+                    const pr = sofiaPrice(s);
+                    const sel = state.sofiaId === s.id;
+                    // Base sólo disponible si hay plan; y no se puede quitar (siempre default cuando no premium)
+                    const disabled = !planSelected;
+                    const badge = s.badge ? `<span class="sofia-opt-badge ${s.badge.cls}">${s.badge.text}</span>` : '';
+
+                    let priceHTML, note = '';
+                    if (s.isFree || pr.now === 0) {
+                        priceHTML = `<div class="sofia-opt-now free"><b>$0</b><span>${pr.per}</span></div>`;
+                    } else {
+                        const showOrig = pr.full !== pr.now;
+                        priceHTML = `
+              ${showOrig ? `<div class="sofia-opt-orig">${fmt(pr.full)}</div>` : ''}
+              <div class="sofia-opt-now"><b>${fmt(pr.now)}</b><span>${pr.per}</span></div>`;
+                    }
+
+                    // Nota especial Studio con Premium
+                    if (s.id === 'studio' && isPremium) {
+                        note = `<div class="sofia-opt-note">Solo +$19.900/mes por tener Plan Premium</div>`;
+                    } else if (s.id === 'smart' && isPremium) {
+                        note = `<div class="sofia-opt-note"><svg fill="none" width="12px" height="12px" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg> Incluida sin costo en tu Plan Premium</div>`;
+                    } else if (s.id === 'base') {
+                        note = `<div class="sofia-opt-note">Incluida con tu plan Numart</div>`;
+                    }
+
+                    return `
+          <div class="sofia-opt ${sel ? 'selected' : ''} ${disabled ? 'disabled' : ''}" data-sofia="${s.id}">
+            ${badge}
+            <div class="sofia-opt-head">
+              <div class="sofia-check"></div>
+              <div class="sofia-opt-name">${s.name}</div>
+            </div>
+            <div class="sofia-opt-desc">${s.desc}</div>
+            <div class="sofia-opt-price">
+              ${priceHTML}
+              ${note}
+            </div>
+          </div>`;
+                }).join('');
+
+                // lock pill
+                document.getElementById('sofiaLockPill').style.display = planSelected ? 'inline-flex' : 'none';
+
+                wrap.querySelectorAll('.sofia-opt').forEach(opt => {
+                    opt.addEventListener('click', () => {
+                        if (opt.classList.contains('disabled')) {
+                            toast('Primero selecciona un plan Numart', false);
+                            return;
+                        }
+                        selectSofia(opt.dataset.sofia);
+                    });
+                });
+            }
+
+            /* =================================================================
+               SELECCIÓN
+               ================================================================= */
+            function selectPlan(id, skipModal) {
+                state.planId = id;
+                const plan = getPlan(id);
+                // SOFIA por defecto según plan
+                state.sofiaId = plan.sofiaDefault;
+                renderNumartPlans();
+                renderSofiaOptions();
+                openDetails();      // abrir detalles automáticamente
+                renderDetails();
+                startRotator();
+                persistSave();
+            }
+
+            function selectSofia(id) {
+                state.sofiaId = id;
+                renderSofiaOptions();
+                renderDetails();
+                persistSave();
+            }
+
+            /* =================================================================
+               PANEL DE DETALLES (abrir / cerrar)
+               ================================================================= */
+            const shell = document.getElementById('checkoutShell');
+            const floatBtn = document.getElementById('floatingCart');
+
+            function openDetails() {
+                state.detailsOpen = true;
+                shell.classList.add('details-open');
+                floatBtn.classList.remove('show');
+                persistSave();
+            }
+            function closeDetails() {
+                state.detailsOpen = false;
+                shell.classList.remove('details-open');
+                if (state.planId) floatBtn.classList.add('show');
+                persistSave();
+            }
+
+            document.getElementById('dpClose').addEventListener('click', closeDetails);
+            floatBtn.addEventListener('click', () => { openDetails(); });
+
+            /* =================================================================
+               MODAL UPGRADE A PREMIUM
+               ================================================================= */
+            const upgradeModal = document.getElementById('upgradeModal');
+
+            function openUpgradeModal() {
+                // Update price note dynamically
+                const premium = getPlan('premium');
+                const pr = planPrice(premium);
+                const note = document.getElementById('upgradeModalPriceNote');
+                if (note) note.innerHTML = `Desde <b>${fmt(pr.now)} ${pr.per}</b> · Sin contratos de permanencia`;
+                upgradeModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                persistSave();
+            }
+            function closeUpgradeModal() {
+                upgradeModal.classList.remove('show');
+                document.body.style.overflow = '';
+                persistSave();
+            }
+            document.getElementById('upgradeModalClose').addEventListener('click', closeUpgradeModal);
+            document.getElementById('upgradeModalKeep').addEventListener('click', closeUpgradeModal);
+            upgradeModal.addEventListener('click', e => { if (e.target === upgradeModal) closeUpgradeModal(); });
+            document.getElementById('upgradeModalConfirm').addEventListener('click', () => {
+                closeUpgradeModal();
+                selectPlan('premium');
+            });
+
+            /* =================================================================
+               RENDER — Contenido del panel de detalles (carrito)
+               ================================================================= */
+            function computeTotals() {
+                const plan = getPlan(state.planId);
+                const sofia = getSofia(state.sofiaId);
+                const planPr = plan ? planPrice(plan) : { now: 0, full: 0 };
+                const sofiaPr = sofia ? sofiaPrice(sofia) : { now: 0, full: 0 };
+
+                const subtotal = planPr.now + sofiaPr.now;
+                let discount = 0;
+                if (state.coupon) {
+                    const c = state.coupon;
+                    discount = c.type === 'pct' ? Math.round(subtotal * c.value / 100) : Math.min(c.value, subtotal);
+                }
+                const total = Math.max(0, subtotal - discount);
+                return { planPr, sofiaPr, subtotal, discount, total };
+            }
+
+            function renderDetails() {
+                const body = document.getElementById('dpBody');
+                const footer = document.getElementById('dpFooter');
+
+                if (!state.planId) {
+                    body.innerHTML = `
+            <div class="dp-empty">
+              ${IC.cart}
+              <div>Selecciona un plan para ver el detalle de tu compra.</div>
+            </div>`;
+                    footer.style.display = 'none';
+                    return;
+                }
+
+                const plan = getPlan(state.planId);
+                const sofia = getSofia(state.sofiaId);
+                const t = computeTotals();
+                const periodTxt = state.isYearly ? 'anual' : 'mensual';
+                const isPremium = state.planId === 'premium';
+                const premium = getPlan('premium');
+                const premiumPr = planPrice(premium);
+                const diff = Math.max(0, premiumPr.now - t.planPr.now);
+                /* ---- Bloque de beneficios exclusivos (solo si NO es premium) ---- */
+                const exclusiveBenefitsBlock = !isPremium ? `
+          <div class="plan-line-rotator-wrap">
+            <div class="plan-line-rotator-label">Disfruta de beneficios exclusivos con el Plan Premium</div>
+            <div class="benefit-rotator" id="benefitRotator"></div>
+            <button class="plan-line-upgrade-link" id="upgradeToPreBtn">
+              
+              Cambiarte a Plan Premium por ${fmt(diff)}
+            </button>
+          </div>` : '';
+
+                /* ---- Línea SOFIA ---- */
+                const sPr = t.sofiaPr;
+                let sofiaTag = '';
+                let sofiaMeta = sofia.desc;
+                let sofiaPriceHTML;
+
+                if (sPr.now === 0) {
+                    sofiaPriceHTML = `<b class="free">GRATIS</b>`;
+                    if (sofia.id === 'base') sofiaTag = `<div class="cart-line-tag">${IC.checkSm} Incluida con tu plan</div>`;
+                    if (sofia.id === 'smart' && isPremium) sofiaTag = `<div class="cart-line-tag">${IC.checkSm} Incluida en Premium</div>`;
+                } else {
+                    const showOrig = sPr.full !== sPr.now;
+                    sofiaPriceHTML = `${showOrig ? `<s>${fmt(sPr.full)}</s>` : ''}<b>${fmt(sPr.now)}</b>`;
+                }
+                if (sofia.id === 'studio' && isPremium) {
+                    sofiaTag = `<div class="cart-line-tag">${IC.checkSm} Precio especial Premium · ahorras ${fmt(sPr.full - sPr.now)}</div>`;
+                }
+
+                /* ---- Card única: Plan + IA + beneficios exclusivos ---- */
+                const planLine = `
+          <div class="cart-line ${plan.highlight}">
+            <div class="cart-line-cat">Plan principal</div>
+            <div class="cart-line-top">
+              <div>
+                <div class="cart-line-name">${plan.name}</div>
+                <div class="cart-line-meta">Suscripción ${periodTxt}${t.planPr.discLabel ? ` · <b style="color:var(--green)">${t.planPr.discLabel}</b>` : ''}</div>
+              </div>
+              <div class="cart-line-price">
+                ${t.planPr.now < t.planPr.full ? `<s>${fmt(t.planPr.full)}</s>` : ''}
+                <b>${fmt(t.planPr.now)}</b>
+              </div>
+            </div>
+            ${exclusiveBenefitsBlock}
+            <div class="cart-line-inner-divider"></div>
+            <div class="cart-line-cat" style="margin-top:.1rem">Inteligencia Artificial</div>
+            <div class="cart-line-top">
+              <div>
+                <div class="cart-line-name">${sofia.name}</div>
+                <div class="cart-line-meta">${sofiaMeta}</div>
+              </div>
+              <div class="cart-line-price">${sofiaPriceHTML}</div>
+            </div>
+            ${sofiaTag}
+          </div>`;
+
+                /* ---- Caja upsell a Premium (si Lite o PYME) — NO abre modal al click ---- */
+                let upsell = '';
+                if (!isPremium) {
+                    const premium = getPlan('premium');
+                    const premiumPr = planPrice(premium);
+                    const diff = Math.max(0, premiumPr.now - t.planPr.now);
+                    upsell = ``;
+                }
+
+                /* ---- Cupón ---- */
+                const couponZone = `
+          <div class="coupon-zone">
+            <button class="coupon-toggle" id="couponToggle">${IC.ticket} ¿Tienes un cupón de descuento?</button>
+            <div class="coupon-input-row" id="couponRow">
+              <input type="text" id="couponInput" placeholder="Ingresa tu cupón" autocomplete="off">
+              <button class="coupon-apply" id="couponApply">Aplicar</button>
+            </div>
+            <div class="coupon-msg" id="couponMsg"></div>
+            <div class="coupon-applied" id="couponApplied">
+              <span>${IC.checkSm} Cupón <b id="couponCode"></b> aplicado</span>
+              <button id="couponRemove" aria-label="Quitar cupón">×</button>
+            </div>
+          </div>`;
+
+                /* ---- Totales con summary inline ---- */
+                const sofiaSummaryPrice = t.sofiaPr.now === 0
+                    ? `<span class="v" style="color:var(--green)">Gratis</span>`
+                    : `<span class="v">${fmt(t.sofiaPr.now)}</span>`;
+
+                const totals = `
+          <div class="dp-totals">
+            <div class="dp-total-row" style="font-size:.82rem"><span>${plan.name}</span><span class="v">${fmt(t.planPr.now)}</span></div>
+            <div class="dp-total-row" style="font-size:.82rem"><span>${sofia.name}</span>${sofiaSummaryPrice}</div>
+            <div class="dp-total-row" style="border-top: 1px dashed #E5E7EB;padding-top: .5rem;"><span>Subtotal</span><span class="v">${fmt(t.subtotal)}</span></div>
+            ${t.discount > 0 ? `<div class="dp-total-row discount"><span>Descuento (cupón)</span><span class="v">- ${fmt(t.discount)}</span></div>` : ''}
+            <div class="dp-total-row grand"><span>Total ${periodTxt}</span><span class="v">${fmt(t.total)}</span></div>
+            <div class="dp-total-due">Se cobrará ${fmt(t.total)} hoy. Renovación ${periodTxt} automática. Cancela cuando quieras.</div>
+          </div>`;
+
+                /* ---- Tabla de facturación ---- */
+                const billing = buildBillingTable(t.total);
+
+                body.innerHTML = planLine + upsell + couponZone + totals + billing;
+                footer.style.display = 'block';
+
+                // Re-vincular listeners dinámicos
+                bindCoupon();
+                // upsell box: NO abre modal (solo informativo)
+                const upgradeToPreBtn = body.querySelector('#upgradeToPreBtn');
+                if (upgradeToPreBtn) upgradeToPreBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openUpgradeModal();
+                });
+
+                startRotator();
+            }
+
+            /* =================================================================
+               TABLA DE FACTURACIÓN
+               ================================================================= */
+            function buildBillingTable(total) {
+                const today = new Date();
+                const opts = { day: '2-digit', month: 'short', year: 'numeric' };
+                const fmtDate = d => d.toLocaleDateString('es-CO', opts);
+
+                const rows = [];
+                const cycleLabel = state.isYearly ? 'Año' : 'Mes';
+
+                // 3 periodos de ejemplo
+                for (let i = 0; i < 3; i++) {
+                    const d = new Date(today);
+                    if (state.isYearly) d.setFullYear(d.getFullYear() + i);
+                    else d.setMonth(d.getMonth() + i);
+                    rows.push({
+                        label: i === 0 ? `Hoy · ${cycleLabel} 1` : `${cycleLabel} ${i + 1}`,
+                        date: fmtDate(d),
+                        amount: total,
+                        first: i === 0
+                    });
+                }
+
+                const trs = rows.map(r => `
+          <tr class="${r.first ? 'first-row' : ''}">
+            <td>${r.first ? '<b>' + r.label + '</b>' : r.label}</td>
+            <td class="bt-date">${r.date}</td>
+            <td style="text-align:right"><b>${fmt(r.amount)}</b></td>
+          </tr>`).join('');
+
+                return `
+          <div class="billing-section">
+            <div class="billing-title">${IC.cal} Calendario de facturación (${state.isYearly ? 'anual' : 'mensual'})</div>
+            <table class="billing-table">
+              <thead>
+                <tr><th>Periodo</th><th>Fecha de cobro</th><th style="text-align:right">Monto</th></tr>
+              </thead>
+              <tbody>${trs}</tbody>
+            </table>
+          </div>`;
+            }
+
+            /* =================================================================
+               ROTADOR DE BENEFICIOS (uno a la vez, sube y baja)
+               ================================================================= */
+            let rotatorTimer = null;
+            let rotatorIdx = 0;
+            function startRotator() {
+                clearInterval(rotatorTimer);
+                const el = document.getElementById('benefitRotator');
+                if (!el || !state.planId) return;
+                // Rotator only shown for non-premium plans (teasing premium benefits)
+                // Always show premium benefits to entice upgrade
+                const list = ROTATING_BENEFITS['premium'] || [];
+                if (!list.length) return;
+
+                rotatorIdx = 0;
+                el.innerHTML = '';
+                let current = makeRotItem(list[0]);
+                el.appendChild(current);
+                requestAnimationFrame(() => current.classList.add('in'));
+
+                // Slower rotation (3.8s) for the small embedded rotator
+                rotatorTimer = setInterval(() => {
+                    const next = (rotatorIdx + 1) % list.length;
+                    const outgoing = current;
+                    const incoming = makeRotItem(list[next]);
+                    el.appendChild(incoming);
+                    void incoming.offsetWidth;
+                    outgoing.classList.remove('in');
+                    outgoing.classList.add('out');
+                    incoming.classList.add('in');
+                    setTimeout(() => { if (outgoing.parentNode) outgoing.parentNode.removeChild(outgoing); }, 600);
+                    current = incoming;
+                    rotatorIdx = next;
+                }, 3800);
+            }
+            function makeRotItem(text) {
+                const div = document.createElement('div');
+                div.className = 'benefit-rotator-item';
+                div.innerHTML = `<div class="feature-icon inc" style="width:1rem;height:1rem;"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg></div><span>${text}</span>`;
+                return div;
+            }
+
+            /* =================================================================
+               CUPONES
+               ================================================================= */
+            function bindCoupon() {
+                const toggle = document.getElementById('couponToggle');
+                const row = document.getElementById('couponRow');
+                const apply = document.getElementById('couponApply');
+                const input = document.getElementById('couponInput');
+                const msg = document.getElementById('couponMsg');
+                const applied = document.getElementById('couponApplied');
+                const codeEl = document.getElementById('couponCode');
+                const remove = document.getElementById('couponRemove');
+
+                if (!toggle) return;
+
+                // estado previo
+                if (state.coupon) {
+                    applied.classList.add('show');
+                    codeEl.textContent = state.coupon.code;
+                    row.classList.remove('open');
+                }
+
+                toggle.addEventListener('click', () => row.classList.toggle('open'));
+
+                const doApply = () => {
+                    const code = (input.value || '').trim().toUpperCase();
+                    msg.className = 'coupon-msg';
+                    if (!code) { msg.textContent = 'Ingresa un cupón.'; msg.classList.add('err'); return; }
+                    const c = COUPONS[code];
+                    if (!c) {
+                        msg.textContent = 'Cupón no encontrado. Verifica que esté bien escrito.';
+                        msg.classList.add('err');
+                        return;
+                    }
+                    if (c.status === 'expired') {
+                        msg.textContent = 'Este cupón ya expiró y no está disponible.';
+                        msg.classList.add('err');
+                        return;
+                    }
+                    if (c.status === 'used') {
+                        msg.textContent = 'Este cupón ya fue utilizado en otra cuenta.';
+                        msg.classList.add('err');
+                        return;
+                    }
+                    state.coupon = { code, ...c };
+                    msg.textContent = '';
+                    renderDetails();
+                    toast(`Cupón ${code} aplicado: ${c.label}`, true);
+                    persistSave();
+                };
+
+                apply.addEventListener('click', doApply);
+                input.addEventListener('keydown', e => { if (e.key === 'Enter') doApply(); });
+
+                if (remove) remove.addEventListener('click', () => {
+                    state.coupon = null;
+                    renderDetails();
+                    toast('Cupón eliminado', true);
+                    persistSave();
+                });
+            }
+
+            /* =================================================================
+               TOGGLE MENSUAL / ANUAL
+               ================================================================= */
+            const pill = document.getElementById('billingPill');
+            const lblMo = document.getElementById('lblMonthly');
+            const lblYr = document.getElementById('lblYearly');
+            if (pill) {
+                pill.addEventListener('click', () => {
+                    state.isYearly = !state.isYearly;
+                    pill.classList.toggle('yearly', state.isYearly);
+                    lblMo.classList.toggle('active', !state.isYearly);
+                    lblYr.classList.toggle('active', state.isYearly);
+                    renderNumartPlans();
+                    renderSofiaOptions();
+                    renderDetails();
+                    persistSave();
+                });
+            }
+
+            /* =================================================================
+               TOAST
+               ================================================================= */
+            let toastTimer = null;
+            function toast(text, ok) {
+                const el = document.getElementById('toast');
+                el.innerHTML = (ok ? IC.checkSm : '') + `<span>${text}</span>`;
+                el.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+            }
+
+            /* =================================================================
+               FORMULARIO DE REGISTRO (modal)
+               ================================================================= */
+            const regOverlay = document.getElementById('regOverlay');
+
+            function openRegistration() {
+                if (!state.planId) { toast('Selecciona un plan primero', false); return; }
+                renderRegSummary();
+                regOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                persistSave();
+            }
+            function closeRegistration() {
+                regOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+                persistSave();
+            }
+
+            document.getElementById('continueBtn').addEventListener('click', openRegistration);
+            document.getElementById('regBack').addEventListener('click', closeRegistration);
+            regOverlay.addEventListener('click', e => { if (e.target === regOverlay) closeRegistration(); });
+
+            function renderRegSummary() {
+                const plan = getPlan(state.planId);
+                const sofia = getSofia(state.sofiaId);
+                const t = computeTotals();
+                const periodTxt = state.isYearly ? 'anual' : 'mensual';
+                const sofiaTxt = t.sofiaPr.now === 0 ? 'Gratis' : fmt(t.sofiaPr.now);
+
+                document.getElementById('regSummary').innerHTML = `
+          <div class="reg-summary-row"><span>${plan.name} (${periodTxt})</span><span>${fmt(t.planPr.now)}</span></div>
+          <div class="reg-summary-row"><span>${sofia.name}</span><span>${sofiaTxt}</span></div>
+          ${t.discount > 0 ? `<div class="reg-summary-row"><span>Descuento</span><span style="color:var(--green)">- ${fmt(t.discount)}</span></div>` : ''}
+          <div class="reg-summary-row total"><span>Total a pagar hoy</span><span class="v">${fmt(t.total)}</span></div>`;
+            }
+
+            // Validación + envío a pasarela
+            function validateReg() {
+                let ok = true;
+                const checks = [
+                    ['regIdType', 'errIdType', v => v !== ''],
+                    ['regId', 'errId', v => v.trim().length >= 4],
+                    ['regName', 'errName', v => v.trim().length >= 3],
+                    ['regEmail', 'errEmail', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim())],
+                    ['regPhone', 'errPhone', v => v.replace(/\D/g, '').length >= 7],
+                ];
+                checks.forEach(([inp, err, test]) => {
+                    const el = document.getElementById(inp);
+                    const errEl = document.getElementById(err);
+                    if (!test(el.value)) {
+                        el.classList.add('invalid');
+                        errEl.classList.add('show');
+                        ok = false;
+                    } else {
+                        el.classList.remove('invalid');
+                        errEl.classList.remove('show');
+                    }
+                });
+
+                // checkboxes obligatorios
+                const tos = document.getElementById('regTos');
+                const priv = document.getElementById('regPriv');
+                if (!tos.checked || !priv.checked) {
+                    ok = false;
+                    toast('Debes aceptar los Términos y la Política de Privacidad', false);
+                }
+                return ok;
+            }
+
+            document.getElementById('regPayBtn').addEventListener('click', () => {
+                if (!validateReg()) return;
+                goToPayment();
+            });
+
+            // limpiar errores al escribir + guardar progreso
+            ['regIdType', 'regId', 'regName', 'regEmail', 'regPhone'].forEach(id => {
+                const el = document.getElementById(id);
+                const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+                el.addEventListener(evt, () => {
+                    el.classList.remove('invalid');
+                    const err = document.getElementById('err' + id.replace('reg', ''));
+                    if (err) err.classList.remove('show');
+                    persistSave();
+                });
+            });
+
+            // guardar también los campos restantes del formulario
+            ['regCC', 'regDob'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('change', persistSave);
+                if (el) el.addEventListener('input', persistSave);
+            });
+            ['regComms', 'regTos', 'regPriv'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('change', persistSave);
+            });
+
+            /* =================================================================
+               REDIRECCIÓN A LA PASARELA DE PAGOS
+               ================================================================= */
+            function goToPayment() {
+                const plan = getPlan(state.planId);
+                const sofia = getSofia(state.sofiaId);
+                const t = computeTotals();
+
+                // Datos del cliente (para comprobantes)
+                const customer = {
+                    idType: document.getElementById('regIdType').value,
+                    id: document.getElementById('regId').value.trim(),
+                    name: document.getElementById('regName').value.trim(),
+                    email: document.getElementById('regEmail').value.trim(),
+                    phone: document.getElementById('regCC').value + ' ' + document.getElementById('regPhone').value.trim(),
+                    dob: document.getElementById('regDob').value
+                };
+                const urlCompleta = window.location.href;
+
+                const orderData = {
+                    // plan principal
+                    plan: plan.name,
+                    planId: plan.id,
+                    // SOFIA
+                    sofia: sofia.name,
+                    sofiaId: sofia.id,
+                    // montos
+                    price: t.total,
+                    subtotal: t.subtotal,
+                    discount: t.discount,
+                    coupon: state.coupon ? state.coupon.code : null,
+                    billing: state.isYearly ? 'yearly' : 'monthly',
+                    customer,
+                    // URLs de retorno
+                    success_url: 'https://portal.numart.com.co/',
+                    cancel_url: urlCompleta,
+                    ts: Date.now()
+                };
+
+                const token = btoa(unescape(encodeURIComponent(JSON.stringify(orderData))))
+                    .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+
+                const sessionId = 'cs_live_' +
+                    [...Array(40)].map(() =>
+                        'abcdefghijklmnopqrstuvwxyzABCDEF0123456789'[Math.floor(Math.random() * 42)]
+                    ).join('');
+
+                // Botón en estado "redirigiendo"
+                const btn = document.getElementById('regPayBtn');
+                btn.disabled = true;
+                document.getElementById('regPayText').textContent = 'Redirigiendo a pago seguro…';
+
+                setTimeout(() => {
+                    window.location.href =
+                        `https://pay.numart.com.co/checkout/pay/?sid=${sessionId}#${token}`;
+                }, 700);
+            }
+
+            /* =================================================================
+               RESTAURAR ESTADO DESDE LA URL
+               ================================================================= */
+            function restoreState() {
+                const snap = Persist.load();
+                if (!snap) return false;
+
+                // --- núcleo ---
+                state.isYearly = snap.y === 1;
+                state.planId = snap.p || null;
+                state.sofiaId = snap.a || null;
+
+                // cupón: reconstruir desde el catálogo si sigue siendo válido
+                if (snap.c && COUPONS[snap.c]) {
+                    state.coupon = { code: snap.c, ...COUPONS[snap.c] };
+                } else {
+                    state.coupon = null;
+                }
+
+                // validar que el plan/sofia existan; si no, limpiar
+                if (state.planId && !getPlan(state.planId)) state.planId = null;
+                if (state.sofiaId && !getSofia(state.sofiaId)) state.sofiaId = null;
+
+                // si hay plan pero no sofia, usar la sofia por defecto del plan
+                if (state.planId && !state.sofiaId) {
+                    const pl = getPlan(state.planId);
+                    if (pl) state.sofiaId = pl.sofiaDefault;
+                }
+
+                state.detailsOpen = snap.d === 1;
+
+                // --- reflejar ciclo en el toggle ---
+                const pillEl = document.getElementById('billingPill');
+                const lblMoEl = document.getElementById('lblMonthly');
+                const lblYrEl = document.getElementById('lblYearly');
+                if (pillEl) pillEl.classList.toggle('yearly', state.isYearly);
+                if (lblMoEl) lblMoEl.classList.toggle('active', !state.isYearly);
+                if (lblYrEl) lblYrEl.classList.toggle('active', state.isYearly);
+
+                // --- pintar todo ---
+                renderNumartPlans();
+                renderSofiaOptions();
+                renderDetails();
+
+                // --- panel de detalles abierto/cerrado ---
+                if (state.detailsOpen && state.planId) {
+                    shell.classList.add('details-open');
+                    floatBtn.classList.remove('show');
+                } else {
+                    shell.classList.remove('details-open');
+                    if (state.planId) floatBtn.classList.add('show');
+                }
+
+                // --- beneficios desplegados ---
+                if (snap.b === 1) {
+                    document.querySelectorAll('.benefits-curtain').forEach(c => c.classList.add('open'));
+                    document.querySelectorAll('.benefits-toggle').forEach(btn => {
+                        btn.classList.add('open');
+                        const sp = btn.querySelector('span');
+                        if (sp) sp.textContent = 'Ocultar beneficios';
+                    });
+                }
+
+                // --- restaurar campos del formulario ---
+                if (snap.f) {
+                    const setV = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.value = v; };
+                    const setC = (id, v) => { const el = document.getElementById(id); if (el) el.checked = !!v; };
+                    setV('regIdType', snap.f.it);
+                    setV('regId', snap.f.id);
+                    setV('regName', snap.f.nm);
+                    setV('regEmail', snap.f.em);
+                    setV('regCC', snap.f.cc);
+                    setV('regPhone', snap.f.ph);
+                    setV('regDob', snap.f.db);
+                    setC('regComms', snap.f.k1);
+                    setC('regTos', snap.f.k2);
+                    setC('regPriv', snap.f.k3);
+                }
+
+                // --- reabrir modales si quedaron abiertos ---
+                if (snap.um === 1 && state.planId && state.planId !== 'premium') {
+                    if (typeof openUpgradeModal === 'function') openUpgradeModal();
+                }
+                if (snap.rg === 1 && state.planId) {
+                    if (typeof openRegistration === 'function') openRegistration();
+                }
+
+                return true;
+            }
+
+            /* =================================================================
+               INIT
+               ================================================================= */
+            function init() {
+                const restored = restoreState();
+                if (!restored) {
+                    renderNumartPlans();
+                    renderSofiaOptions();
+                    renderDetails();
+                }
+                // guardar snapshot inicial (crea el param si no existía)
+                persistSave();
+            }
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+        })();
+    </script>
+</body>
+
+</html>
